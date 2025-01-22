@@ -171,7 +171,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         )}
       </div>
 
-      <div className="md:hidden flex flex-col space-y-1">
+      <div className="md:hidden mb-8 flex flex-col space-y-1">
         <picture>
           <source srcSet={items[selectedIndex].imageUrl} type='image/webp' />
           <img
@@ -267,6 +267,7 @@ const CollapsibleList = ({ items = [] }) => {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [showAllImages, setShowAllImages] = useState(false);
+    const [showAlternateText, setShowAlternateText] = useState(false);
   
     // Toggle item expansion
     const toggleItem = (index) => {
@@ -275,11 +276,13 @@ const CollapsibleList = ({ items = [] }) => {
           setShowAllImages(false);
           setSelectedIndex(null);
           setExpandedItems(new Set());
+          setShowAlternateText(false);
           return;
         }
         setShowAllImages(true);
         setSelectedIndex(null);
         setExpandedItems(new Set());
+        setShowAlternateText(false);
         return;
       }
 
@@ -399,77 +402,77 @@ const CollapsibleList = ({ items = [] }) => {
       <div className="flex justify-between sm:hidden">
         {/* Container for all content */}
         <div className="w-full">
-          {/* Row of titles */}
-          <div className="flex flex-row space-x-2 mb-4 w-full">
-            <div>
-              <button 
-              onClick={() => toggleItem('all')}
-              className="text-left w-full hover:text-white transition-colors mr-2"
-              onMouseEnter={() => setHoveredIndex('all')}
-              onMouseLeave={() => setHoveredIndex(null)}>
-                <motion.span
-                animate={{
-                  color: showAllImages ? '#ffffff' : 
-                  (expandedItems.size > 0 ? '#777777' : '#ffffff') 
-            }}
-            className="font-montreal ease-in text-base">
-              All </motion.span> 
-              </button>
+          {showAlternateText ? (
+            <div className="flex flex-row space-x-2 mb-4 w-full">
+              {items.map((item, index) => (
+                expandedItems.has(index) && (
+                <div key={`row-${index}`}>
+                  <div className="flex flex-row">
+                    <button 
+                    onClick={() => {
+                      toggleItem(index);
+                      setShowAlternateText(false);
+                    }}
+                    className="text-left hover:text-white transition-colors mr-2">
+                      <motion.span
+                      animate={{
+                        color: expandedItems.has(index) ? '#ffffff' : '#777777'
+                      }}
+                      className="font-montreal ease-in text-base"> {item.title} </motion.span>
+                    </button>
+                    <motion.div 
+                    initial={{ oapcity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="font-montreal text-[#777777] ml-2 text-base">
+                      {item.category}  ·  {item.type}  ·  {item.year}
+                    </motion.div>
+                  </div>
+                  <motion.div 
+                    initial={{ oapcity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-2 font-montreal text-white text-base">
+                      {item.description}
+                    </motion.div>
+                  </div> 
+                )
+              ))}
             </div>
-            {items.map((item, index) => (
-              <div key={`row-${index}`}>
-                <button 
-                  onClick={() => toggleItem(index)}
-                  className="text-left w-full hover:text-white transition-colors mr-2"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}>
+          ) : (
+            <div className="flex flex-row space-x-2 mb-4 w-full">
+              <div>
+                <button onClick={() => toggleItem('all')}
+                className="text-left w-full hover:text-white transition-colors mr-2">
                   <motion.span
+                  animate={{
+                    color: showAllImages ? '#ffffff' :
+                    (expandedItems.size > 0 ? '#777777' : '#ffffff')
+                  }} 
+                  className="font-montreal ease-in text-base">All</motion.span>
+                </button>
+                </div>
+              {items.map((item, index) => (
+                <div key={`row-${index}`}>
+                  <button onClick={() => {
+                    toggleItem(index);
+                    setShowAlternateText(prev => !prev);
+                  }}
+                  className="text-left w-full hover:text-white transition-colors mr-2">
+                    <motion.span
                     animate={{
                       color: showAllImages ? '#777777' :
-                      (expandedItems.size > 0
-                        ? (expandedItems.has(index) || hoveredIndex === index ? "#ffffff" : "#777777")
-                        : (hoveredIndex !== null ? (hoveredIndex === index ? "#ffffff" : "#777777")
-                          : "#ffffff")),
+                      (expandedItems.size >0 
+                      ? (expandedItems.has(index) ? "#ffffff" : "#777777")
+                    : "#ffffff"),
                     }}
                     className="font-montreal ease-in text-base">
-                    {item.title}
-                  </motion.span>
-                </button>
+                      {item.title}
+                    </motion.span>
+                  </button>
+                  </div>
+              ))}
               </div>
-            ))}
-          </div>
-
-          {/* Descriptions - rendered outside the flex row */}
-          <AnimatePresence>
-          {items.map((item, index) => (
-            expandedItems.has(index) && (
-              <motion.div
-                key={`description-${index}`}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2}}
-                className="w-full overflow-hidden"
-              >
-                <div className="pb-4">
-                  <span className="font-montreal text-white text-base">
-                    {item.description}
-                  </span>
-                  <br />
-                  {item.title === "GLO" && (
-                    <motion.button
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-4 py-2 text-white font-montreal text-base"
-                    onClick={() => window.open('mailto:arvindksushil@gmail.com?subject=Inquiry about GLO project', '_blank')}>
-                      Contact for more info
-                    </motion.button>
-                  )}
-                </div>
-              </motion.div>
-            )
-          ))}
-          </AnimatePresence>
+          )}
+        
         </div>
       </div>
     </>
