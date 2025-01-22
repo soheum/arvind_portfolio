@@ -4,75 +4,6 @@ import Header from './Header';
 import { motion, AnimatePresence } from 'framer-motion';
 import { select } from 'framer-motion/client';
 
-const ProjectList = ({ taskName, taskDescription, isSelected, onClick }) => {
-    return (
-        <div className="mb-4">   
-            <motion.div 
-            className="inline-block cursor-pointer"
-            onClick={onClick}
-            whileHover={{ color: "rgb(255 255 255)" }}
-            initial={{ color: isSelected ? "rgb(255 255 255)" : "rgb(82 82 91)" }}
-            animate={{ color: isSelected ? "rgb(255 255 255)" : "rgb(82 82 91)" }}
-            transition={{ duration: 0.2 }}>
-                <motion.span className="text-xl font-montreal">
-                    {taskName}
-                </motion.span>
-            </motion.div>
-            <motion.div className="text-base font-montreal pr-4"
-                initial={{ opacity: 0, height: 0, color: isSelected ? "rgb(255 255 255)" : "rgb(82 82 91)"  }}
-                animate={{
-                    opacity: isSelected ? 1 : 0,
-                    height: isSelected ? "auto" : 0,
-                    color: isSelected ? "rgb(255 255 255)" : "rgb(82 82 91)"
-                }}
-                transition={{ duration: 0 }}>
-                    {taskDescription}
-                </motion.div>
-        </div>
-    )
-}
-
-const Collapsible = ({open, children, title, image}) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleFilterOpening = () => {
-        setIsOpen((prev) => !prev);
-    }
-
-    return (      
-        <>
-        <div className="card w-full">
-            <div className="grid grid-cols-3">
-                <div className="col-span-1">
-                    <motion.div className="p-2">
-                        <motion.span
-                        className="font-montreal text-zinc-800 cursor-pointer"
-                        whileHover={{ color: "rgb(255 255 255)"}}
-                        onClick={handleFilterOpening}
-                        >
-                        {title}
-                        </motion.span>
-                    </motion.div>
-                    <div>
-                        <div>{isOpen && <span className="p-2 font-montreal text-white">{children}</span>}</div>
-                    </div>
-                </div>
-                <div className="col-span-2 flex items-center"> {/* Takes up 2/3 of the grid */}
-                    <div>
-                    {isOpen && <motion.img 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        src={image}
-                        className="w-[40rem] md:w-[45rem] lg:w-[40rem] shrink-0"
-                    />
-                    }</div>
-                </div>
-            </div>
-        </div>
-        </>
-    )
-}
-
 const projectData = [
     {
         title: "Genesis",
@@ -80,21 +11,16 @@ const projectData = [
         type: "Personal",
         year: "2024",
         description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
-        // imageUrl: "../src/assets/Genesis-Still.jpg",
         imageUrl: "/assets/02-01.jpg",
-        imageUrlWeb: "../src/assets/Genesis-Still.webp",
+        imageUrlWeb: "/assets/Genesis-Still.webp",
         imageUrl2: "/assets/02-02.jpg",
-        // imageUrl2: "../src/assets/Genesis-Bottom.jpg",
-        imageUrl2Web: "../assets/Genesis-Bottom.webp",
-        // imageUrl3: "../src/assets/Genesis-Detail.jpg",
+        imageUrl2Web: "/assets/Genesis-Bottom.webp",
         imageUrl3: "/assets/02-03.jpg",
-        imageUrl3Web: "../src/assets/Genesis-Detail.webp",
-        // imageUrl4: "../src/assets/Genesis-Gold-Still.jpg",
+        imageUrl3Web: "/assets/Genesis-Detail.webp",
         imageUrl4: "assets/02-04.jpg",
-        imageUrl4Web: "../assets/Genesis-Gold-Still.webp",
-        // imageUrl5: "../src/assets/Genesis-Multi.jpg",
+        imageUrl4Web: "/assets/Genesis-Gold-Still.webp",
         imageUrl5: "/assets/02-05.jpg",
-        imageUrl5Web: "../assets/Genesis-Multi.webp",
+        imageUrl5Web: "/assets/Genesis-Multi.webp",
     },
     {
         title: "Starlight",
@@ -102,18 +28,14 @@ const projectData = [
         type: "Personal",
         year: "2024",
         description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
-        // imageUrl: "../src/assets/Starlight-Still-2.jpg",
         imageUrl: "/assets/03-01.jpg",
-        imageUrlWeb: "../src/assets/Starlight-Still-2.webp",
-        // imageUrl2: "../src/assets/Starlight-Still-Detail.jpg",
+        imageUrlWeb: "/assets/Starlight-Still-2.webp",
         imageUrl2: "/assets/03-02.jpg",
-        imageUrl2Web: "../src/assets/Starlight-Still-Detail.webp",
+        imageUrl2Web: "/assets/Starlight-Still-Detail.webp",
         imageUrl3: "/assets/03-03.jpg",
-        // imageUrl3: "../src/assets/Starlight-Top-View.jpg",
-        imageUrl3Web: "../src/assets/Starlight-Top-View.webp",
+        imageUrl3Web: "/assets/Starlight-Top-View.webp",
         imageUrl4: "/assets/03-04.jpg",
-        // imageUrl4: "../src/assets/Starlight-transition-detail.jpg",
-        imageUrl4Web: "../src/assets/Starlight-transition-detail.webp",
+        imageUrl4Web: "/assets/Starlight-transition-detail.webp",
     },
     {
         title: "Collier",
@@ -121,34 +43,27 @@ const projectData = [
         type: "Personal",
         year: "2025",
         description: "Personalized leather dog collar. The titanium buckle, cushioning suede patch and steel hook are subtle nods that capture the essence of our four legged friend.",
-        // imageUrl: "../src/assets/Collier-Top.jpg",
         imageUrl: "/assets/01-01.jpg",
-        imageUrlWeb: "../src/assets/Collier-Top.webp",
-        // imageUrl2: "../src/assets/Collier-interlock.jpg",
+        imageUrlWeb: "/assets/Collier-Top.webp",
         imageUrl2: "/assets/01-02.jpg",
-        imageUrl2Web: "../src/assets/Collier-interlock.webp",        
-        // imageUrl3: "../src/assets/Front-Buckle.jpg",
+        imageUrl2Web: "/assets/Collier-interlock.webp",        
         imageUrl3: "/assets/01-03.jpg",
-        imageUrl3Web: "../src/assets/Collier-Front-Buckle.webp",
-        // imageUrl4: "../src/assets/Collier-Front.jpg",
+        imageUrl3Web: "/assets/Collier-Front-Buckle.webp",
         imageUrl4: "/assets/01-04.jpg",
-        imageUrl4Web: "../src/assets/Collier-Front.webp",
-        // imageUrl5: "../src/assets/Collier-Rear.jpg",
+        imageUrl4Web: "/assets/Collier-Front.webp",
         imageUrl5: "/assets/01-05.jpg",
-        imageUrl5Web: "../src/assets/Collier-Rear.webp",
-        // imageUrl6: "../src/assets/Collier-Hook-Close-up.jpg",
+        imageUrl5Web: "/assets/Collier-Rear.webp",
         imageUrl6: "/assets/01-06.jpg",
-        imageUrl6Web: "../src/assets/Collier-Hook-Close-up.webp"
+        imageUrl6Web: "/assets/Collier-Hook-Close-up.webp"
     },
     {
       title: "GLO",
       category: "Electronics",
       type: "Commercial",
       year: "2021 -",
-      description: "Developing new category of reduced risk products for GLO at British American Tobacco. Contact for more information.",
-      // imageUrl: "../src/assets/X3-Cover.jpg",
+      description: "Developing new category of reduced risk products for GLO at British American Tobacco.",
       imageUrl: "/assets/04-01.jpg",
-      imageUrlWeb: "../src/assets/Hyper-BAT.webp",
+      imageUrlWeb: "/assets/Hyper-BAT.webp",
   },
 ];
 
@@ -178,7 +93,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       <div className="md:hidden flex flex-col space-y-1 pb-2">
         {randomImages.map((image, index) => (
           <picture key={index}>
-            <source srcset={image.src} type="image/webp" />
+            <source srcSet={image.src} type="image/webp" />
             <img
               src={image.src}
               alt={image.title}
@@ -196,7 +111,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       <div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1">
       {items[selectedIndex].imageUrl && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl} type='image/webp' />
           <img
             src={items[selectedIndex].imageUrl}
             alt={items[selectedIndex].title}
@@ -206,7 +121,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         )}
         {items[selectedIndex].imageUrl2 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl2} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl2} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl2}
           alt={items[selectedIndex].title}
@@ -216,7 +131,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
          )}
         {items[selectedIndex].imageUrl3 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl3} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl3} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl3}
           alt={items[selectedIndex].title}
@@ -226,7 +141,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       )}
         {items[selectedIndex].imageUrl4 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl4} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl4} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl4}
           alt={items[selectedIndex].title}
@@ -236,7 +151,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       )}
         {items[selectedIndex].imageUrl5 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl5} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl5} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl5}
           alt={items[selectedIndex].title}
@@ -246,7 +161,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         )}
         {items[selectedIndex].imageUrl6 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl6} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl6} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl6}
           alt={items[selectedIndex].title}
@@ -258,7 +173,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
 
       <div className="md:hidden flex flex-col space-y-1">
         <picture>
-          <source srcset={items[selectedIndex].imageUrl} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl} type='image/webp' />
           <img
             src={items[selectedIndex].imageUrl}
             alt={items[selectedIndex].title}
@@ -267,7 +182,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         </picture>
         {items[selectedIndex].imageUrl2 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl2} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl2} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl2}
           alt={items[selectedIndex].title}
@@ -277,7 +192,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
          )}
         {items[selectedIndex].imageUrl3 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl3} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl3} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl3}
           alt={items[selectedIndex].title}
@@ -297,7 +212,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       )}
         {items[selectedIndex].imageUrl5 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl5} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl5} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl5}
           alt={items[selectedIndex].title}
@@ -307,7 +222,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         )}
         {items[selectedIndex].imageUrl6 && (
         <picture>
-          <source srcset={items[selectedIndex].imageUrl6} type='image/webp' />
+          <source srcSet={items[selectedIndex].imageUrl6} type='image/webp' />
         <img
           src={items[selectedIndex].imageUrl6}
           alt={items[selectedIndex].title}
@@ -324,7 +239,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
     <div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min ">
       {randomImages.map((image, index) => (
         <picture>
-          <source srcset={image.src} type="image/webp" />
+          <source srcSet={image.src} type="image/webp" />
           <img key={index} src={image.src} alt={image.title}
            className="w-full h-120 object-cover" />
         </picture>
@@ -334,7 +249,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
     <div className="md:hidden flex flex-col space-y-2 pb-16">
       {randomImages.map((image, index) => (
         <picture>
-          <source srcset={image.src} type="image/webp" />
+          <source srcSet={image.src} type="image/webp" />
           <img key={index} src={image.src} alt={image.title}
            className="w-full h-120 object-cover" />
         </picture>
@@ -355,12 +270,6 @@ const CollapsibleList = ({ items = [] }) => {
   
     // Toggle item expansion
     const toggleItem = (index) => {
-      // if (index === 'all') {
-      //   setShowAllImages(true);
-      //   setSelectedIndex(null);
-      //   setExpandedItems(new Set());
-      //   return;
-      // }
       if (index === 'all') {
         if (showAllImages) {
           setShowAllImages(false);
@@ -436,6 +345,16 @@ const CollapsibleList = ({ items = [] }) => {
                     <span className="font-montreal text-white text-base">
                       {item.description}
                     </span>
+                  <br />
+                  {item.title === "GLO" && (
+                    <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className=" text-[#777777] pt-2 font-montreal text-base hover:text-white transition-colors"
+                    onClick={() => window.open('mailto:arvindksushil@gmail.com?subject=Inquiry about GLO project', '_blank')}>
+                      Contact for more info
+                    </motion.button>
+                  )}
                   </div>
                 </motion.div>
               )}
@@ -536,6 +455,16 @@ const CollapsibleList = ({ items = [] }) => {
                   <span className="font-montreal text-white text-base">
                     {item.description}
                   </span>
+                  <br />
+                  {item.title === "GLO" && (
+                    <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-4 py-2 text-white font-montreal text-base"
+                    onClick={() => window.open('mailto:arvindksushil@gmail.com?subject=Inquiry about GLO project', '_blank')}>
+                      Contact for more info
+                    </motion.button>
+                  )}
                 </div>
               </motion.div>
             )
