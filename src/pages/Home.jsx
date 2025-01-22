@@ -6,38 +6,6 @@ import { select } from 'framer-motion/client';
 
 const projectData = [
     {
-        title: "Genesis",
-        category: "Precious wares",
-        type: "Personal",
-        year: "2024",
-        description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
-        imageUrl: "/assets/02-01.jpg",
-        imageUrlWeb: "/assets/Genesis-Still.webp",
-        imageUrl2: "/assets/02-02.jpg",
-        imageUrl2Web: "/assets/Genesis-Bottom.webp",
-        imageUrl3: "/assets/02-03.jpg",
-        imageUrl3Web: "/assets/Genesis-Detail.webp",
-        imageUrl4: "assets/02-04.jpg",
-        imageUrl4Web: "/assets/Genesis-Gold-Still.webp",
-        imageUrl5: "/assets/02-05.jpg",
-        imageUrl5Web: "/assets/Genesis-Multi.webp",
-    },
-    {
-        title: "Starlight",
-        category: "Precious wares",
-        type: "Personal",
-        year: "2024",
-        description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
-        imageUrl: "/assets/03-01.jpg",
-        imageUrlWeb: "/assets/Starlight-Still-2.webp",
-        imageUrl2: "/assets/03-02.jpg",
-        imageUrl2Web: "/assets/Starlight-Still-Detail.webp",
-        imageUrl3: "/assets/03-03.jpg",
-        imageUrl3Web: "/assets/Starlight-Top-View.webp",
-        imageUrl4: "/assets/03-04.jpg",
-        imageUrl4Web: "/assets/Starlight-transition-detail.webp",
-    },
-    {
         title: "Collier",
         category: "Objects",
         type: "Personal",
@@ -56,6 +24,38 @@ const projectData = [
         imageUrl6: "/assets/01-06.jpg",
         imageUrl6Web: "/assets/Collier-Hook-Close-up.webp"
     },
+    {
+      title: "Starlight",
+      category: "Precious wares",
+      type: "Personal",
+      year: "2024",
+      description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
+      imageUrl: "/assets/03-01.jpg",
+      imageUrlWeb: "/assets/Starlight-Still-2.webp",
+      imageUrl2: "/assets/03-02.jpg",
+      imageUrl2Web: "/assets/Starlight-Still-Detail.webp",
+      imageUrl3: "/assets/03-03.jpg",
+      imageUrl3Web: "/assets/Starlight-Top-View.webp",
+      imageUrl4: "/assets/03-04.jpg",
+      imageUrl4Web: "/assets/Starlight-transition-detail.webp",
+  },
+    {
+      title: "Genesis",
+      category: "Precious wares",
+      type: "Personal",
+      year: "2024",
+      description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
+      imageUrl: "/assets/02-01.jpg",
+      imageUrlWeb: "/assets/Genesis-Still.webp",
+      imageUrl2: "/assets/02-02.jpg",
+      imageUrl2Web: "/assets/Genesis-Bottom.webp",
+      imageUrl3: "/assets/02-03.jpg",
+      imageUrl3Web: "/assets/Genesis-Detail.webp",
+      imageUrl4: "assets/02-04.jpg",
+      imageUrl4Web: "/assets/Genesis-Gold-Still.webp",
+      imageUrl5: "/assets/02-05.jpg",
+      imageUrl5Web: "/assets/Genesis-Multi.webp",
+  },
     {
       title: "GLO",
       category: "Electronics",
@@ -433,6 +433,15 @@ const CollapsibleList = ({ items = [] }) => {
                     className="mt-2 font-montreal text-white text-base">
                       {item.description}
                     </motion.div>
+                    {item.title === "GLO" && (
+                    <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className=" text-white pt-2 font-montreal text-base"
+                    onClick={() => window.open('mailto:arvindksushil@gmail.com?subject=Inquiry about GLO project', '_blank')}>
+                      Contact for more info
+                    </motion.button>
+                  )}
                   </div> 
                 )
               ))}
@@ -517,8 +526,13 @@ const CollapsibleList = ({ items = [] }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 h-full">
             {listItems}
-          <div className="col-span-2 h-full hide_scroll overflow-y-auto pt-1 pb-16">
+          <div className="sm:hidden col-span-2 h-full hide_scroll overflow-y-auto pt-1 pb-16">
             <div className="sticky top-4 overflow-y-auto ">
+              <ImageGrid items={items} selectedIndex={selectedIndex} showAllImages={showAllImages} />
+            </div>
+          </div>
+          <div className="hidden md:block col-span-2 h-full hide_scroll overflow-y-auto pb-16">
+            <div className="sticky overflow-y-auto ">
               <ImageGrid items={items} selectedIndex={selectedIndex} showAllImages={showAllImages} />
             </div>
           </div>
