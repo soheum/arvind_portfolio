@@ -12,17 +12,17 @@ const projectData = [
         year: "2025",
         description: "Personalized leather dog collar. The titanium buckle, cushioning suede patch and steel hook are subtle nods that capture the essence of our four legged friend.",
         imageUrl: "/assets/01-01.jpg",
-        imageUrlWeb: "/assets/Collier-Top.webp",
+        imageUrlWeb: "/assets/01-01.webp",
         imageUrl2: "/assets/01-02.jpg",
-        imageUrl2Web: "/assets/Collier-interlock.webp",        
+        imageUrl2Web: "/assets/01-02.webp",        
         imageUrl3: "/assets/01-03.jpg",
-        imageUrl3Web: "/assets/Collier-Front-Buckle.webp",
+        imageUrl3Web: "/assets/01-03",
         imageUrl4: "/assets/01-04.jpg",
-        imageUrl4Web: "/assets/Collier-Front.webp",
+        imageUrl4Web: "/assets/01-04.webp",
         imageUrl5: "/assets/01-05.jpg",
-        imageUrl5Web: "/assets/Collier-Rear.webp",
+        imageUrl5Web: "/assets/01-05.webp",
         imageUrl6: "/assets/01-06.jpg",
-        imageUrl6Web: "/assets/Collier-Hook-Close-up.webp"
+        imageUrl6Web: "/assets/01-06.webp"
     },
     {
       title: "Starlight",
@@ -31,13 +31,13 @@ const projectData = [
       year: "2024",
       description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
       imageUrl: "/assets/03-01.jpg",
-      imageUrlWeb: "/assets/Starlight-Still-2.webp",
+      imageUrlWeb: "/assets/03-01.webp",
       imageUrl2: "/assets/03-02.jpg",
-      imageUrl2Web: "/assets/Starlight-Still-Detail.webp",
+      imageUrl2Web: "/assets/03-02.webp",
       imageUrl3: "/assets/03-03.jpg",
-      imageUrl3Web: "/assets/Starlight-Top-View.webp",
+      imageUrl3Web: "/assets/03-03.webp",
       imageUrl4: "/assets/03-04.jpg",
-      imageUrl4Web: "/assets/Starlight-transition-detail.webp",
+      imageUrl4Web: "/assets/03-04.webp",
   },
     {
       title: "Genesis",
@@ -46,15 +46,14 @@ const projectData = [
       year: "2024",
       description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
       imageUrl: "/assets/02-01.jpg",
-      imageUrlWeb: "/assets/Genesis-Still.webp",
+      imageUrlWeb: "/assets/02-01.webp",
       imageUrl2: "/assets/02-02.jpg",
-      imageUrl2Web: "/assets/Genesis-Bottom.webp",
+      imageUrl2Web: "/assets/02-02.webp",
       imageUrl3: "/assets/02-03.jpg",
-      imageUrl3Web: "/assets/Genesis-Detail.webp",
+      imageUrl3Web: "/assets/02-03.webp",
       imageUrl4: "assets/02-04.jpg",
-      imageUrl4Web: "/assets/Genesis-Gold-Still.webp",
-      imageUrl5: "/assets/02-05.jpg",
-      imageUrl5Web: "/assets/Genesis-Multi.webp",
+      imageUrl4Web: "/assets/02-04.webp",
+
   },
     {
       title: "GLO",
@@ -63,7 +62,7 @@ const projectData = [
       year: "2021 -",
       description: "Developing new category of reduced risk products for GLO at British American Tobacco.",
       imageUrl: "/assets/04-01.jpg",
-      imageUrlWeb: "/assets/Hyper-BAT.webp",
+      imageUrlWeb: "/assets/04-01.webp",
   },
 ];
 
@@ -94,11 +93,11 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
         {randomImages.map((image, index) => (
           <picture key={index}>
             <source srcSet={image.src} type="image/webp" />
-            <img
+            {/* <img
               src={image.src}
               alt={image.title}
               className="w-full aspect-square object-cover"
-            />
+            /> */}
           </picture>
         ))}
       </div>
