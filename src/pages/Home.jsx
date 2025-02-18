@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../index.css';
 import Header from './Header';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,16 +13,31 @@ const projectData = [
         description: "Personalized leather dog collar. The titanium buckle, cushioning suede patch and steel hook are subtle nods that capture the essence of our four legged friend.",
         imageUrl: "/assets/01-01.jpg",
         imageUrlWeb: "/assets/01-01.webp",
+        imageUrlmb: "/assets/01-01-mb.jpg",
+        imageUrlsm: "/assets/01-01-sm.jpg",
         imageUrl2: "/assets/01-02.jpg",
-        imageUrl2Web: "/assets/01-02.webp",        
+        imageUrl2Web: "/assets/01-02.webp",
+        imageUrl2sm: "/assets/01-02-sm.jpg",
+        imageUrl2mb: "/assets/01-02-mb.jpg",        
         imageUrl3: "/assets/01-03.jpg",
-        imageUrl3Web: "/assets/01-03",
+        imageUrl3Web: "/assets/01-03.webp",
+        imageUrl3mb: "/assets/01-03-mb.jpg",
+        imageUrl3sm: "/assets/01-03-sm.jpg",
         imageUrl4: "/assets/01-04.jpg",
         imageUrl4Web: "/assets/01-04.webp",
+        imageUrl4mb: "/assets/01-04-mb.jpg",
+        imageUrl4sm: "/assets/01-04-sm.jpg",
         imageUrl5: "/assets/01-05.jpg",
         imageUrl5Web: "/assets/01-05.webp",
+        imageUrl5mb: "/assets/01-05-mb.jpg",
+        imageUrl5sm: "/assets/01-05-sm.jpg",
         imageUrl6: "/assets/01-06.jpg",
-        imageUrl6Web: "/assets/01-06.webp"
+        imageUrl6Web: "/assets/01-06.webp",
+        imageUrl6sm: "/assets/01-06-sm.jpg",
+        imageUrl7: "/assets/01-07.jpg",
+        imageUrl7Web: "/assets/01-07.webp",
+        imageUrl7mb: "/assets/01-07-mb.jpg",
+        imageUrl7sm: "/assets/01-07-sm.jpg",
     },
     {
       title: "Starlight",
@@ -32,12 +47,20 @@ const projectData = [
       description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
       imageUrl: "/assets/03-01.jpg",
       imageUrlWeb: "/assets/03-01.webp",
+      imageUrlmb: "/assets/03-01-mb.jpg",
+      imageUrlsm: "/assets/03-01-sm.jpg",
       imageUrl2: "/assets/03-02.jpg",
       imageUrl2Web: "/assets/03-02.webp",
+      imageUrl2mb: "/assets/03-02-mb.jpg",
+      imageUrlsm: "/assets/03-02-sm.jpg",
       imageUrl3: "/assets/03-03.jpg",
       imageUrl3Web: "/assets/03-03.webp",
+      imageUrl3mb: "/assets/03-03-mb.jpg",
+      imageUrlsm: "/assets/03-03-sm.jpg",
       imageUrl4: "/assets/03-04.jpg",
       imageUrl4Web: "/assets/03-04.webp",
+      imageUrl4mb: "/assets/03-04-mb.jpg",
+      imageUrlsm: "/assets/03-04-sm.jpg",
   },
     {
       title: "Genesis",
@@ -47,12 +70,20 @@ const projectData = [
       description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
       imageUrl: "/assets/02-01.jpg",
       imageUrlWeb: "/assets/02-01.webp",
+      imageUrlmb: "/assets/02-01-mb.jpg",
+      imageUrlsm: "/assets/02-01-sm.jpg",
       imageUrl2: "/assets/02-02.jpg",
       imageUrl2Web: "/assets/02-02.webp",
+      imageUrl2mb: "/assets/02-02-mb.jpg",
+      imageUrlsm: "/assets/02-02-sm.jpg",
       imageUrl3: "/assets/02-03.jpg",
       imageUrl3Web: "/assets/02-03.webp",
-      imageUrl4: "assets/02-04.jpg",
+      imageUrl3mb: "/assets/02-03-mb.jpg",
+      imageUrlsm: "/assets/02-03-sm.jpg",
+      imageUrl4: "/assets/02-04.jpg",
       imageUrl4Web: "/assets/02-04.webp",
+      imageUrl4mb: "/assets/02-04-mb.jpg",
+      imageUrlsm: "/assets/02-04-sm.jpg",
 
   },
     {
@@ -63,22 +94,69 @@ const projectData = [
       description: "Developing new category of reduced risk products for GLO at British American Tobacco.",
       imageUrl: "/assets/04-01.jpg",
       imageUrlWeb: "/assets/04-01.webp",
+      imageUrlmb: "/assets/04-01-mb.jpg",
+      imageUrlsm: "/assets/04-01-sm.jpg",
   },
 ];
+const defaultAnimations = {
+  hidden: {
+      opacity: 0,
+      y: 1,
+  },
+  visible: {
+      opacity: 1,
+      y: 0,
+  },
+};
+
+const BlurImage= ({ src, blurSrc, alt, className }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const minLoadingTime = 1000;
+    const startTime = Date.now();
+
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      const loadingTime = Date.now() - startTime;
+      if (loadingTime < minLoadingTime) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, minLoadingTime - loadingTime);
+      } else {
+        setIsLoading(false);
+      }
+    };
+  }, [src]);
+  return (
+    <div className="relative w-full h-full">
+      <img src={blurSrc} alt=""
+      className={`absolute inset-0 w-full h-full object-cover blur-xl transition-opacity duration-300 ${
+        isLoading ? 'opacity-100' : 'opacity-0'
+      }`} /> 
+      <img src={src} alt={alt} 
+      className={`relative w-full h-full object-cover transition-opacity duration-500 ${
+        isLoading ? 'opacity-0' : 'opacity-100'
+      }`} 
+      />
+    </div>
+  );
+};
 
 const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   const randomImages = useMemo(() => {
     const images = [...items]
     .filter(item => item.title !== "GLO")
     .flatMap(item => [
-      { src: item.imageUrl, title: item.title },
-      { src: item.imageUrl2, title: item.title },
-      { src: item.imageUrl3, title: item.title },
-      { src: item.imageUrl4, title: item.title },
-      { src: item.imageUrl5, title: item.title },
-      { src: item.imageUrl6, title: item.title },
+      { src: item.imageUrl, webp: item.imageUrlWeb, mobile: item.imageUrlmb, sm: item.imageUrlsm, title: item.title },
+      { src: item.imageUrl2, webp: item.imageUrl2Web, mobile: item.imageUrl2mb, sm: item.imageUrl2sm, title: item.title },
+      { src: item.imageUrl3, webp: item.imageUrl3Web, mobile: item.imageUrl3mb, sm: item.imageUrl3sm, title: item.title },
+      { src: item.imageUrl4, webp: item.imageUrl4Web, mobile: item.imageUrl4mb, sm: item.imageUrl4sm, title: item.title },
+      { src: item.imageUrl5, webp: item.imageUrl5Web, mobile: item.imageUrl5mb, sm: item.imageUrl5sm, title: item.title },
+      { src: item.imageUrl6, webp: item.imageUrl6Web, mobile: item.imageUrl6mb, sm: item.imageUrl6sm, title: item.title },
     ])
-    .filter(image => image.src);
+    .filter(image => image.webp);
     while (images.length < 16) {
       images.push(...images.slice(0, 16 - images.length));
     }
@@ -89,15 +167,16 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
 
   if (showAllImages) {
     return (
-      <div className="md:hidden flex flex-col space-y-1 pb-2">
+      // Showing all images in mobile 
+      <div className="md:hidden flex flex-col space-y-1 pb-2"> 
         {randomImages.map((image, index) => (
           <picture key={index}>
             <source srcSet={image.src} type="image/webp" />
-            {/* <img
+            <img
               src={image.src}
               alt={image.title}
               className="w-full aspect-square object-cover"
-            /> */}
+            />
           </picture>
         ))}
       </div>
@@ -107,127 +186,109 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   if (selectedIndex !== null) {
     return(
       <>
+      {/* Desktop  */}
       <div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1">
-      {items[selectedIndex].imageUrl && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl} type='image/webp' />
+      {items[selectedIndex].imageUrlWeb && (
+        // <BlurImage 
+        // src={items[selectedIndex].imageUrlWeb}
+        // blurSrc={items[selectedIndex].imageUrlsm}
+        // alt={items[selectedIndex].title}
+        // className="w-full h-full" />
           <img
-            src={items[selectedIndex].imageUrl}
+            src={items[selectedIndex].imageUrlWeb}
             alt={items[selectedIndex].title}
+            loading="lazy"
             className="w-full h-full object-cover"
           />
-        </picture>
         )}
-        {items[selectedIndex].imageUrl2 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl2} type='image/webp' />
+        {items[selectedIndex].imageUrl2Web && (
         <img
-          src={items[selectedIndex].imageUrl2}
+          src={items[selectedIndex].imageUrl2Web}
           alt={items[selectedIndex].title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
-        </picture>
          )}
-        {items[selectedIndex].imageUrl3 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl3} type='image/webp' />
+        {items[selectedIndex].imageUrl3Web && (
         <img
-          src={items[selectedIndex].imageUrl3}
+          src={items[selectedIndex].imageUrl3Web}
           alt={items[selectedIndex].title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
-        </picture>
       )}
-        {items[selectedIndex].imageUrl4 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl4} type='image/webp' />
+        {items[selectedIndex].imageUrl4Web && (
         <img
-          src={items[selectedIndex].imageUrl4}
+          src={items[selectedIndex].imageUrl4Web}
           alt={items[selectedIndex].title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
-        </picture>
       )}
-        {items[selectedIndex].imageUrl5 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl5} type='image/webp' />
+        {items[selectedIndex].imageUrl5Web && (
         <img
-          src={items[selectedIndex].imageUrl5}
+          src={items[selectedIndex].imageUrl5Web}
           alt={items[selectedIndex].title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
-        </picture>
         )}
-        {items[selectedIndex].imageUrl6 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl6} type='image/webp' />
+        {items[selectedIndex].imageUrl6Web && (
         <img
-          src={items[selectedIndex].imageUrl6}
+          src={items[selectedIndex].imageUrl6Web}
           alt={items[selectedIndex].title}
+          loading="lazy"
           className="w-full h-full object-cover"
         />
-        </picture>
         )}
       </div>
-
+      {/* Mobile */}
       <div className="md:hidden mb-8 flex flex-col space-y-1">
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl} type='image/webp' />
           <img
-            src={items[selectedIndex].imageUrl}
+            src={items[selectedIndex].imageUrlmb}
             alt={items[selectedIndex].title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
-        </picture>
-        {items[selectedIndex].imageUrl2 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl2} type='image/webp' />
+        {items[selectedIndex].imageUrl2mb && (
         <img
-          src={items[selectedIndex].imageUrl2}
+          src={items[selectedIndex].imageUrl2mb}
           alt={items[selectedIndex].title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
-        </picture>
          )}
-        {items[selectedIndex].imageUrl3 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl3} type='image/webp' />
+        {items[selectedIndex].imageUrl3mb && (
         <img
-          src={items[selectedIndex].imageUrl3}
+          src={items[selectedIndex].imageUrl3mb}
           alt={items[selectedIndex].title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
-        </picture>
       )}
-        {items[selectedIndex].imageUrl4 && (
-        <picture>
-          <source srcset={items[selectedIndex].imageUrl4} type='image/webp' />
+        {items[selectedIndex].imageUrl4mb && (
         <img
-          src={items[selectedIndex].imageUrl4}
+          src={items[selectedIndex].imageUrl4mb}
           alt={items[selectedIndex].title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
-        </picture>
       )}
-        {items[selectedIndex].imageUrl5 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl5} type='image/webp' />
+        {items[selectedIndex].imageUrl5mb && (
         <img
-          src={items[selectedIndex].imageUrl5}
+          src={items[selectedIndex].imageUrl5mb}
           alt={items[selectedIndex].title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
-        </picture>
         )}
-        {items[selectedIndex].imageUrl6 && (
-        <picture>
-          <source srcSet={items[selectedIndex].imageUrl6} type='image/webp' />
+        {items[selectedIndex].imageUrl6mb && (
         <img
-          src={items[selectedIndex].imageUrl6}
+          src={items[selectedIndex].imageUrl6mb}
           alt={items[selectedIndex].title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
-        </picture>
         )}
       </div>
       </>
@@ -235,23 +296,24 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   }
   return (
     <>
+    {/* Desktop view  */}
     <div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min ">
       {randomImages.map((image, index) => (
-        <picture>
-          <source srcSet={image.src} type="image/webp" />
-          <img key={index} src={image.src} alt={image.title}
+        //    <BlurImage 
+        //    key={index}
+        //    src={image.webp} alt={image.title} blurSrc={image.sm}
+        // className="w-full h-120 object-cover" />
+        <img key={index} src={image.webp} alt={image.title}
+          loading="lazy"
            className="w-full h-120 object-cover" />
-        </picture>
       ))}
     </div>
-
+    {/* Mobile view */}
     <div className="md:hidden flex flex-col space-y-2 pb-16">
       {randomImages.map((image, index) => (
-        <picture>
-          <source srcSet={image.src} type="image/webp" />
-          <img key={index} src={image.src} alt={image.title}
+          <img key={index} src={image.mobile} alt={image.title}
+          loading="lazy"
            className="w-full h-120 object-cover" />
-        </picture>
       ))}
     </div>
 
