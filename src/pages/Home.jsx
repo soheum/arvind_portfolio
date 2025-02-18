@@ -98,16 +98,40 @@ const projectData = [
       imageUrlsm: "/assets/04-01-sm.jpg",
   },
 ];
-const defaultAnimations = {
-  hidden: {
-      opacity: 0,
-      y: 1,
-  },
+
+const headerAnimation = {
+  hidden: { opacity: 0, y: -30 },
   visible: {
-      opacity: 1,
-      y: 0,
-  },
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1
+    }
+  }
 };
+const textAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.3,
+      delay: 0.25
+    }
+  }
+};
+const textAnimation2 = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 1,
+      delay: 1.5
+    }
+  }
+};
+
 
 const BlurImage= ({ src, blurSrc, alt, className }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -168,26 +192,27 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   if (showAllImages) {
     return (
       // Showing all images in mobile 
-      <div className="md:hidden flex flex-col space-y-1 pb-2"> 
+      <motion.div className="md:hidden flex flex-col space-y-1 pb-2"> 
         {randomImages.map((image, index) => (
           <picture key={index}>
             <source srcSet={image.src} type="image/webp" />
-            <img
+            <motion.img
               src={image.src}
               alt={image.title}
               className="w-full aspect-square object-cover"
+              variants={imageAnimation}
             />
           </picture>
         ))}
-      </div>
+      </motion.div>
     );
   }
 
   if (selectedIndex !== null) {
     return(
       <>
-      {/* Desktop  */}
-      <div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1">
+      {/* Desktop  The variant below affects the filtered images */}
+      <motion.div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1" variants={textAnimation}>
       {items[selectedIndex].imageUrlWeb && (
         // <BlurImage 
         // src={items[selectedIndex].imageUrlWeb}
@@ -241,7 +266,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
           className="w-full h-full object-cover"
         />
         )}
-      </div>
+      </motion.div>
       {/* Mobile */}
       <div className="md:hidden mb-8 flex flex-col space-y-1">
           <img
@@ -297,13 +322,13 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   return (
     <>
     {/* Desktop view  */}
-    <div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min ">
+    <div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min" >
       {randomImages.map((image, index) => (
         //    <BlurImage 
         //    key={index}
         //    src={image.webp} alt={image.title} blurSrc={image.sm}
         // className="w-full h-120 object-cover" />
-        <img key={index} src={image.webp} alt={image.title}
+        <img key={index} src={image.webp} alt={image.title} variants={textAnimation2}
           loading="lazy"
            className="w-full h-120 object-cover" />
       ))}
@@ -367,7 +392,7 @@ const CollapsibleList = ({ items = [] }) => {
 
       return (
         <>
-      <div className="flex flex-col justify-between hidden md:flex">
+      <motion.div className="flex flex-col justify-between hidden md:flex" variants={textAnimation}>
         <div className="space-y-2">
           {items.map((item, index) => (
             <div key={`row-${index}`}>
@@ -458,7 +483,7 @@ const CollapsibleList = ({ items = [] }) => {
           E-mail
           </motion.a>
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex justify-between sm:hidden">
         {/* Container for all content */}
@@ -604,13 +629,16 @@ const CollapsibleList = ({ items = [] }) => {
 
 const Home = () => {
     return (
-            <div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden">
+            <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
+            initial="hidden" animate="visible">
+                <motion.div variants={headerAnimation}>
                 <Header />
-                  <div className="md:mt-12 flex-1">
-                    <CollapsibleList items={projectData} />
-                  </div>
+                </motion.div>
+                <motion.div className="md:mt-12 flex-1" variants={textAnimation2}>
+                  <CollapsibleList items={projectData} />
+                </motion.div>
                     
-            </div>
+            </motion.div>
     )
 };
 
