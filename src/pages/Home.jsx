@@ -121,12 +121,12 @@ const imageListAnimation = {
   }
 };
 const loadAnimation = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0,  },
   visible: { 
     opacity: 1, 
     y: 0,
     transition: { 
-      duration: 0.8,
+      duration: 0.5,
       delay: 0.5
     }
   }
@@ -280,7 +280,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   return (
     <>
     {/* Desktop view  variant here controls the list and image grid but not the footer*/}
-    <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min">
+    <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min" variants={loadAnimation}>
       {randomImages.map((image, index) => (
         <img key={index} src={image.webp} alt={image.title} 
           loading="lazy"
