@@ -280,7 +280,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   return (
     <>
     {/* Desktop view  variant here controls the list and image grid but not the footer*/}
-    <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min" variants={loadAnimation}>
+    <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min">
       {randomImages.map((image, index) => (
         <img key={index} src={image.webp} alt={image.title} 
           loading="lazy"
@@ -347,7 +347,7 @@ const CollapsibleList = ({ items = [] }) => {
       return (
         <>
         {/* List and Footer in Desktop */}
-      <motion.div className="flex flex-col justify-between hidden md:flex" variants={loadAnimation}>
+      <motion.div className="flex flex-col justify-between hidden md:flex" >
         <div className="space-y-2">
           {items.map((item, index) => (
             <div key={`row-${index}`}>
@@ -586,9 +586,9 @@ const Home = () => {
     return (
             <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
             initial="hidden" animate="visible">
-                <motion.div variants={loadAnimation}>
+                {/* <motion.div variants={loadAnimation}> */}
                 <Header />
-                </motion.div>
+                {/* </motion.div> */}
                 {/* <motion.div className="md:mt-12 flex-1" variants={loadAnimation}> */}
                 <div className="md:mt-12 flex-1">
                   <CollapsibleList items={projectData} />
