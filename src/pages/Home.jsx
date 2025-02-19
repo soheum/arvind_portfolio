@@ -100,16 +100,16 @@ const projectData = [
 ];
 
 const headerAnimation = {
-  hidden: { opacity: 0, y: -30 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 1
+      duration: 1,
     }
   }
 };
-const textAnimation = {
+const imageListAnimation = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
@@ -120,52 +120,16 @@ const textAnimation = {
     }
   }
 };
-const textAnimation2 = {
-  hidden: { opacity: 0, y: 20 },
+const loadAnimation = {
+  hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
     y: 0,
     transition: { 
-      duration: 1,
-      delay: 1.5
+      duration: 0.8,
+      delay: 0.5
     }
   }
-};
-
-
-const BlurImage= ({ src, blurSrc, alt, className }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const minLoadingTime = 1000;
-    const startTime = Date.now();
-
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      const loadingTime = Date.now() - startTime;
-      if (loadingTime < minLoadingTime) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, minLoadingTime - loadingTime);
-      } else {
-        setIsLoading(false);
-      }
-    };
-  }, [src]);
-  return (
-    <div className="relative w-full h-full">
-      <img src={blurSrc} alt=""
-      className={`absolute inset-0 w-full h-full object-cover blur-xl transition-opacity duration-300 ${
-        isLoading ? 'opacity-100' : 'opacity-0'
-      }`} /> 
-      <img src={src} alt={alt} 
-      className={`relative w-full h-full object-cover transition-opacity duration-500 ${
-        isLoading ? 'opacity-0' : 'opacity-100'
-      }`} 
-      />
-    </div>
-  );
 };
 
 const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
@@ -200,7 +164,6 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
               src={image.src}
               alt={image.title}
               className="w-full aspect-square object-cover"
-              variants={imageAnimation}
             />
           </picture>
         ))}
@@ -212,13 +175,8 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
     return(
       <>
       {/* Desktop  The variant below affects the filtered images */}
-      <motion.div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1" variants={textAnimation}>
+      <motion.div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1" variants={imageListAnimation}>
       {items[selectedIndex].imageUrlWeb && (
-        // <BlurImage 
-        // src={items[selectedIndex].imageUrlWeb}
-        // blurSrc={items[selectedIndex].imageUrlsm}
-        // alt={items[selectedIndex].title}
-        // className="w-full h-full" />
           <img
             src={items[selectedIndex].imageUrlWeb}
             alt={items[selectedIndex].title}
@@ -321,18 +279,14 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   }
   return (
     <>
-    {/* Desktop view  */}
-    <div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min" >
+    {/* Desktop view  variant here controls the list and image grid but not the footer*/}
+    <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min">
       {randomImages.map((image, index) => (
-        //    <BlurImage 
-        //    key={index}
-        //    src={image.webp} alt={image.title} blurSrc={image.sm}
-        // className="w-full h-120 object-cover" />
-        <img key={index} src={image.webp} alt={image.title} variants={textAnimation2}
+        <img key={index} src={image.webp} alt={image.title} 
           loading="lazy"
            className="w-full h-120 object-cover" />
       ))}
-    </div>
+    </motion.div>
     {/* Mobile view */}
     <div className="md:hidden flex flex-col space-y-2 pb-16">
       {randomImages.map((image, index) => (
@@ -392,7 +346,8 @@ const CollapsibleList = ({ items = [] }) => {
 
       return (
         <>
-      <motion.div className="flex flex-col justify-between hidden md:flex" variants={textAnimation}>
+        {/* List and Footer in Desktop */}
+      <motion.div className="flex flex-col justify-between hidden md:flex" variants={loadAnimation}>
         <div className="space-y-2">
           {items.map((item, index) => (
             <div key={`row-${index}`}>
@@ -631,12 +586,14 @@ const Home = () => {
     return (
             <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
             initial="hidden" animate="visible">
-                <motion.div variants={headerAnimation}>
+                <motion.div variants={loadAnimation}>
                 <Header />
                 </motion.div>
-                <motion.div className="md:mt-12 flex-1" variants={textAnimation2}>
+                {/* <motion.div className="md:mt-12 flex-1" variants={loadAnimation}> */}
+                <div className="md:mt-12 flex-1">
                   <CollapsibleList items={projectData} />
-                </motion.div>
+                </div>
+                {/* </motion.div> */}
                     
             </motion.div>
     )
