@@ -131,7 +131,28 @@ const loadAnimation = {
     }
   }
 };
-
+const ImageWithSkeleton  = ({ src, alt, width, height }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  return (
+    <div className="relative">
+      {isLoading && (
+        <div className="absolute inset-0 bg-[#0F0F0F] animate-pulse"
+        style={{
+          aspectRatio: `${width}/${height} `
+        }}
+        />
+      )}
+      <img src={src} alt={alt} 
+      className={`transition-opacity duration-300 ${
+        isLoading ? 'opacity-0' : 'opacity-100'
+      }`}
+      style={{
+        width: '100%', height: 'auto', aspectRatio: `${width}/${height}`
+      }}
+      onLoad={() => setIsLoading(false)} />
+    </div>
+  );
+};
 const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   const randomImages = useMemo(() => {
     const images = [...items]
@@ -177,52 +198,82 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
       {/* Desktop  The variant below affects the filtered images */}
       <motion.div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1" variants={imageListAnimation}>
       {items[selectedIndex].imageUrlWeb && (
-          <img
+          // <img
+          //   src={items[selectedIndex].imageUrlWeb}
+          //   alt={items[selectedIndex].title}
+          //   loading="lazy"
+          //   className="w-full h-full object-cover"
+          // />
+          <ImageWithSkeleton 
             src={items[selectedIndex].imageUrlWeb}
             alt={items[selectedIndex].title}
             loading="lazy"
-            className="w-full h-full object-cover"
-          />
+            className="w-full h-full object-cover" />
         )}
         {items[selectedIndex].imageUrl2Web && (
-        <img
-          src={items[selectedIndex].imageUrl2Web}
-          alt={items[selectedIndex].title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+        // <img
+        //   src={items[selectedIndex].imageUrl2Web}
+        //   alt={items[selectedIndex].title}
+        //   loading="lazy"
+        //   className="w-full h-full object-cover"
+        // />
+        <ImageWithSkeleton 
+        src={items[selectedIndex].imageUrl2Web}
+        alt={items[selectedIndex].title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
          )}
         {items[selectedIndex].imageUrl3Web && (
-        <img
-          src={items[selectedIndex].imageUrl3Web}
-          alt={items[selectedIndex].title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+        // <img
+        //   src={items[selectedIndex].imageUrl3Web}
+        //   alt={items[selectedIndex].title}
+        //   loading="lazy"
+        //   className="w-full h-full object-cover"
+        // />
+        <ImageWithSkeleton 
+        src={items[selectedIndex].imageUrl3Web}
+        alt={items[selectedIndex].title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
       )}
         {items[selectedIndex].imageUrl4Web && (
-        <img
-          src={items[selectedIndex].imageUrl4Web}
-          alt={items[selectedIndex].title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+        // <img
+        //   src={items[selectedIndex].imageUrl4Web}
+        //   alt={items[selectedIndex].title}
+        //   loading="lazy"
+        //   className="w-full h-full object-cover"
+        // />
+        <ImageWithSkeleton 
+        src={items[selectedIndex].imageUrl4Web}
+        alt={items[selectedIndex].title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
       )}
         {items[selectedIndex].imageUrl5Web && (
-        <img
-          src={items[selectedIndex].imageUrl5Web}
-          alt={items[selectedIndex].title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+        // <img
+        //   src={items[selectedIndex].imageUrl5Web}
+        //   alt={items[selectedIndex].title}
+        //   loading="lazy"
+        //   className="w-full h-full object-cover"
+        // />
+        <ImageWithSkeleton 
+        src={items[selectedIndex].imageUrl5Web}
+        alt={items[selectedIndex].title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
         )}
         {items[selectedIndex].imageUrl6Web && (
-        <img
-          src={items[selectedIndex].imageUrl6Web}
-          alt={items[selectedIndex].title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+        // <img
+        //   src={items[selectedIndex].imageUrl6Web}
+        //   alt={items[selectedIndex].title}
+        //   loading="lazy"
+        //   className="w-full h-full object-cover"
+        // />
+        <ImageWithSkeleton 
+        src={items[selectedIndex].imageUrl6Web}
+        alt={items[selectedIndex].title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
         )}
       </motion.div>
       {/* Mobile */}
@@ -282,9 +333,14 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
     {/* Desktop view  variant here controls the list and image grid but not the footer*/}
     <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min">
       {randomImages.map((image, index) => (
-        <img key={index} src={image.webp} alt={image.title} 
-          loading="lazy"
-           className="w-full h-120 object-cover" />
+        // <img key={index} src={image.webp} alt={image.title} 
+        //   loading="lazy"
+        //    className="w-full h-120 object-cover" />
+           <ImageWithSkeleton 
+        src={image.webp}
+        alt={image.title}
+        loading="lazy"
+        className="w-full h-full object-cover" />
       ))}
     </motion.div>
     {/* Mobile view */}
