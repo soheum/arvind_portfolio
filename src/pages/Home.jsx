@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import '../index.css';
 import Header from './Header';
 import { motion, AnimatePresence } from 'framer-motion';
-import { select } from 'framer-motion/client';
+import { X, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const projectData = [
     {
@@ -14,30 +14,23 @@ const projectData = [
         imageUrl: "/assets/01-01.jpg",
         imageUrlWeb: "/assets/01-01.webp",
         imageUrlmb: "/assets/01-01-mb.jpg",
-        imageUrlsm: "/assets/01-01-sm.jpg",
         imageUrl2: "/assets/01-02.jpg",
         imageUrl2Web: "/assets/01-02.webp",
-        imageUrl2sm: "/assets/01-02-sm.jpg",
         imageUrl2mb: "/assets/01-02-mb.jpg",        
         imageUrl3: "/assets/01-03.jpg",
         imageUrl3Web: "/assets/01-03.webp",
         imageUrl3mb: "/assets/01-03-mb.jpg",
-        imageUrl3sm: "/assets/01-03-sm.jpg",
         imageUrl4: "/assets/01-04.jpg",
         imageUrl4Web: "/assets/01-04.webp",
         imageUrl4mb: "/assets/01-04-mb.jpg",
-        imageUrl4sm: "/assets/01-04-sm.jpg",
         imageUrl5: "/assets/01-05.jpg",
         imageUrl5Web: "/assets/01-05.webp",
         imageUrl5mb: "/assets/01-05-mb.jpg",
-        imageUrl5sm: "/assets/01-05-sm.jpg",
         imageUrl6: "/assets/01-06.jpg",
         imageUrl6Web: "/assets/01-06.webp",
-        imageUrl6sm: "/assets/01-06-sm.jpg",
         imageUrl7: "/assets/01-07.jpg",
         imageUrl7Web: "/assets/01-07.webp",
         imageUrl7mb: "/assets/01-07-mb.jpg",
-        imageUrl7sm: "/assets/01-07-sm.jpg",
     },
     {
       title: "Starlight",
@@ -48,19 +41,15 @@ const projectData = [
       imageUrl: "/assets/03-01.jpg",
       imageUrlWeb: "/assets/03-01.webp",
       imageUrlmb: "/assets/03-01-mb.jpg",
-      imageUrlsm: "/assets/03-01-sm.jpg",
       imageUrl2: "/assets/03-02.jpg",
       imageUrl2Web: "/assets/03-02.webp",
       imageUrl2mb: "/assets/03-02-mb.jpg",
-      imageUrlsm: "/assets/03-02-sm.jpg",
       imageUrl3: "/assets/03-03.jpg",
       imageUrl3Web: "/assets/03-03.webp",
       imageUrl3mb: "/assets/03-03-mb.jpg",
-      imageUrlsm: "/assets/03-03-sm.jpg",
       imageUrl4: "/assets/03-04.jpg",
       imageUrl4Web: "/assets/03-04.webp",
       imageUrl4mb: "/assets/03-04-mb.jpg",
-      imageUrlsm: "/assets/03-04-sm.jpg",
   },
     {
       title: "Genesis",
@@ -71,19 +60,15 @@ const projectData = [
       imageUrl: "/assets/02-01.jpg",
       imageUrlWeb: "/assets/02-01.webp",
       imageUrlmb: "/assets/02-01-mb.jpg",
-      imageUrlsm: "/assets/02-01-sm.jpg",
       imageUrl2: "/assets/02-02.jpg",
       imageUrl2Web: "/assets/02-02.webp",
       imageUrl2mb: "/assets/02-02-mb.jpg",
-      imageUrlsm: "/assets/02-02-sm.jpg",
       imageUrl3: "/assets/02-03.jpg",
       imageUrl3Web: "/assets/02-03.webp",
       imageUrl3mb: "/assets/02-03-mb.jpg",
-      imageUrlsm: "/assets/02-03-sm.jpg",
-      imageUrl4: "/assets/02-04.jpg",
-      imageUrl4Web: "/assets/02-04.webp",
-      imageUrl4mb: "/assets/02-04-mb.jpg",
-      imageUrlsm: "/assets/02-04-sm.jpg",
+      // imageUrl4: "/assets/02-04.jpg",
+      // imageUrl4Web: "/assets/02-04.webp",
+      // imageUrl4mb: "/assets/02-04-mb.jpg",
 
   },
     {
@@ -95,7 +80,6 @@ const projectData = [
       imageUrl: "/assets/04-01.jpg",
       imageUrlWeb: "/assets/04-01.webp",
       imageUrlmb: "/assets/04-01-mb.jpg",
-      imageUrlsm: "/assets/04-01-sm.jpg",
   },
 ];
 
@@ -131,10 +115,12 @@ const loadAnimation = {
     }
   }
 };
-const ImageWithSkeleton  = ({ src, alt, width, height }) => {
+
+const ImageWithSkeleton  = ({ src, alt, width, height, onClick, className, loading }) => {
   const [isLoading, setIsLoading] = useState(true);
   return (
-    <div className="relative">
+    <div className="relative " 
+    onClick={onClick} >
       {isLoading && (
         <div className="absolute inset-0 bg-[#0F0F0F] animate-pulse"
         style={{
@@ -145,7 +131,7 @@ const ImageWithSkeleton  = ({ src, alt, width, height }) => {
       <img src={src} alt={alt} 
       className={`transition-opacity duration-300 ${
         isLoading ? 'opacity-0' : 'opacity-100'
-      }`}
+      } ${className}`}
       style={{
         width: '100%', height: 'auto', aspectRatio: `${width}/${height}`
       }}
@@ -153,17 +139,102 @@ const ImageWithSkeleton  = ({ src, alt, width, height }) => {
     </div>
   );
 };
+const ImageModal = ({ image, images, onClose }) => {
+  if (!image) return null;
+  // Find initial image index
+  const initialIndex = images.findIndex(img => img.src === image.src);
+  // Create state for handling arrow keys
+  const [currentImageIndex, setCurrentImageIndex] = useState(initialIndex);
+
+  // Navigation functions - use currentImageIndex instead of currentIndex
+  const handlePrevious = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);  // Changed from currentIndex
+    }
+  };
+  const handleNext = () => {
+    if (currentImageIndex < images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);  // Changed from currentIndex
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      } else if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+  
+  window.addEventListener('keydown', handleKeyDown);
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, [currentImageIndex]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4">
+      <button
+        onClick={onClose}
+        className="absolute top-20 right-20 text-white hover:text-gray-300 transition-colors"
+      >
+        <X size={24} />
+      </button>
+
+      {/* Left Arrow - use currentImageIndex */}
+      {currentImageIndex > 0 && (
+        <button
+          onClick={handlePrevious}
+          className="absolute left-8 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors w-48 h-1/2 flex items-center justify-center"
+        >
+          <ArrowLeft size={32} />
+        </button>
+      )}
+
+      {/* Right Arrow - use currentImageIndex */}
+      {currentImageIndex < images.length - 1 && (
+        <button
+          onClick={handleNext}
+          className="absolute right-8 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors w-48 h-1/2 flex items-center justify-center"
+        >
+          <ArrowRight size={32} />
+        </button>
+      )}
+
+      <div className="max-w-2xl w-full max-h-[90vh] relative">
+        <picture>
+          <source srcSet={images[currentImageIndex].webp || images[currentImageIndex].src} type="image/webp" />
+          <img
+            src={images[currentImageIndex].src}
+            alt={images[currentImageIndex].title}
+            className="w-full h-full object-contain"
+          />
+        </picture>
+      </div>
+    </div>
+  );
+};
+
 const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
+  const [modalImage, setModalImage] = useState(null);
+  const handleImageClick = (image) => {
+    setModalImage(image);
+  };
+
   const randomImages = useMemo(() => {
     const images = [...items]
     .filter(item => item.title !== "GLO")
     .flatMap(item => [
-      { src: item.imageUrl, webp: item.imageUrlWeb, mobile: item.imageUrlmb, sm: item.imageUrlsm, title: item.title },
-      { src: item.imageUrl2, webp: item.imageUrl2Web, mobile: item.imageUrl2mb, sm: item.imageUrl2sm, title: item.title },
-      { src: item.imageUrl3, webp: item.imageUrl3Web, mobile: item.imageUrl3mb, sm: item.imageUrl3sm, title: item.title },
-      { src: item.imageUrl4, webp: item.imageUrl4Web, mobile: item.imageUrl4mb, sm: item.imageUrl4sm, title: item.title },
-      { src: item.imageUrl5, webp: item.imageUrl5Web, mobile: item.imageUrl5mb, sm: item.imageUrl5sm, title: item.title },
-      { src: item.imageUrl6, webp: item.imageUrl6Web, mobile: item.imageUrl6mb, sm: item.imageUrl6sm, title: item.title },
+      { src: item.imageUrl, webp: item.imageUrlWeb, mobile: item.imageUrlmb, title: item.title },
+      { src: item.imageUrl2, webp: item.imageUrl2Web, mobile: item.imageUrl2mb, title: item.title },
+      { src: item.imageUrl3, webp: item.imageUrl3Web, mobile: item.imageUrl3mb, title: item.title },
+      { src: item.imageUrl4, webp: item.imageUrl4Web, mobile: item.imageUrl4mb, title: item.title },
+      { src: item.imageUrl5, webp: item.imageUrl5Web, mobile: item.imageUrl5mb, title: item.title },
+      { src: item.imageUrl6, webp: item.imageUrl6Web, mobile: item.imageUrl6mb, title: item.title },
+      { src: item.imageUrl7, webp: item.imageUrl7Web, mobile: item.imageUrl7mb, title: item.title },
     ])
     .filter(image => image.webp);
     while (images.length < 16) {
@@ -177,6 +248,7 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
   if (showAllImages) {
     return (
       // Showing all images in mobile 
+      <>
       <motion.div className="md:hidden flex flex-col space-y-1 pb-2"> 
         {randomImages.map((image, index) => (
           <picture key={index}>
@@ -189,142 +261,50 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
           </picture>
         ))}
       </motion.div>
+      </>
     );
   }
 
   if (selectedIndex !== null) {
+    const selectedImages = [
+      { src: items[selectedIndex].imageUrl, webp: items[selectedIndex].imageUrlWeb },
+      { src: items[selectedIndex].imageUrl2, webp: items[selectedIndex].imageUrl2Web },
+      { src: items[selectedIndex].imageUrl3, webp: items[selectedIndex].imageUrl3Web },
+      { src: items[selectedIndex].imageUrl4, webp: items[selectedIndex].imageUrl4Web },
+      { src: items[selectedIndex].imageUrl5, webp: items[selectedIndex].imageUrl5Web },
+      { src: items[selectedIndex].imageUrl6, webp: items[selectedIndex].imageUrl6Web },
+      { src: items[selectedIndex].imageUrl7, webp: items[selectedIndex].imageUrl7Web },
+    ].filter(img => img.webp);
+
     return(
       <>
       {/* Desktop  The variant below affects the filtered images */}
       <motion.div className="hidden md:grid grid-cols-4 grid-rows-4 gap-1" variants={imageListAnimation}>
-      {items[selectedIndex].imageUrlWeb && (
-          // <img
-          //   src={items[selectedIndex].imageUrlWeb}
-          //   alt={items[selectedIndex].title}
-          //   loading="lazy"
-          //   className="w-full h-full object-cover"
-          // />
-          <ImageWithSkeleton 
-            src={items[selectedIndex].imageUrlWeb}
-            alt={items[selectedIndex].title}
-            loading="lazy"
-            className="w-full h-full object-cover" />
-        )}
-        {items[selectedIndex].imageUrl2Web && (
-        // <img
-        //   src={items[selectedIndex].imageUrl2Web}
-        //   alt={items[selectedIndex].title}
-        //   loading="lazy"
-        //   className="w-full h-full object-cover"
-        // />
-        <ImageWithSkeleton 
-        src={items[selectedIndex].imageUrl2Web}
-        alt={items[selectedIndex].title}
-        loading="lazy"
-        className="w-full h-full object-cover" />
-         )}
-        {items[selectedIndex].imageUrl3Web && (
-        // <img
-        //   src={items[selectedIndex].imageUrl3Web}
-        //   alt={items[selectedIndex].title}
-        //   loading="lazy"
-        //   className="w-full h-full object-cover"
-        // />
-        <ImageWithSkeleton 
-        src={items[selectedIndex].imageUrl3Web}
-        alt={items[selectedIndex].title}
-        loading="lazy"
-        className="w-full h-full object-cover" />
-      )}
-        {items[selectedIndex].imageUrl4Web && (
-        // <img
-        //   src={items[selectedIndex].imageUrl4Web}
-        //   alt={items[selectedIndex].title}
-        //   loading="lazy"
-        //   className="w-full h-full object-cover"
-        // />
-        <ImageWithSkeleton 
-        src={items[selectedIndex].imageUrl4Web}
-        alt={items[selectedIndex].title}
-        loading="lazy"
-        className="w-full h-full object-cover" />
-      )}
-        {items[selectedIndex].imageUrl5Web && (
-        // <img
-        //   src={items[selectedIndex].imageUrl5Web}
-        //   alt={items[selectedIndex].title}
-        //   loading="lazy"
-        //   className="w-full h-full object-cover"
-        // />
-        <ImageWithSkeleton 
-        src={items[selectedIndex].imageUrl5Web}
-        alt={items[selectedIndex].title}
-        loading="lazy"
-        className="w-full h-full object-cover" />
-        )}
-        {items[selectedIndex].imageUrl6Web && (
-        // <img
-        //   src={items[selectedIndex].imageUrl6Web}
-        //   alt={items[selectedIndex].title}
-        //   loading="lazy"
-        //   className="w-full h-full object-cover"
-        // />
-        <ImageWithSkeleton 
-        src={items[selectedIndex].imageUrl6Web}
-        alt={items[selectedIndex].title}
-        loading="lazy"
-        className="w-full h-full object-cover" />
-        )}
+      {selectedImages.map((image, index) => (
+        <ImageWithSkeleton
+          key={index}
+          src={image.webp}
+          alt={items[selectedIndex].title}
+          loading="lazy"
+          className="w-full h-full object-cover hover:cursor-pointer"
+          onClick={() => handleImageClick(image)}
+            />
+          ))}
       </motion.div>
       {/* Mobile */}
-      <div className="md:hidden mb-8 flex flex-col space-y-1">
-          <img
-            src={items[selectedIndex].imageUrlmb}
-            alt={items[selectedIndex].title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        {items[selectedIndex].imageUrl2mb && (
+      <div className="md:hidden mb-8 flex flex-col space-y-1" variants={imageListAnimation}>
+      {selectedImages.map((image, index) => (
         <img
-          src={items[selectedIndex].imageUrl2mb}
+          key={index}
+          src={image.src}
           alt={items[selectedIndex].title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover cursor-pointer"
           loading="lazy"
+          onClick={() => handleImageClick(image)}
         />
-         )}
-        {items[selectedIndex].imageUrl3mb && (
-        <img
-          src={items[selectedIndex].imageUrl3mb}
-          alt={items[selectedIndex].title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      )}
-        {items[selectedIndex].imageUrl4mb && (
-        <img
-          src={items[selectedIndex].imageUrl4mb}
-          alt={items[selectedIndex].title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      )}
-        {items[selectedIndex].imageUrl5mb && (
-        <img
-          src={items[selectedIndex].imageUrl5mb}
-          alt={items[selectedIndex].title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        )}
-        {items[selectedIndex].imageUrl6mb && (
-        <img
-          src={items[selectedIndex].imageUrl6mb}
-          alt={items[selectedIndex].title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        )}
+      ))}
       </div>
+      <ImageModal image={modalImage} images={selectedImages} onClose={() => setModalImage(null)} />
       </>
     );
   }
@@ -333,32 +313,27 @@ const ImageGrid= ({ items, selectedIndex, showAllImages }) => {
     {/* Desktop view  variant here controls the list and image grid but not the footer*/}
     <motion.div className="hidden md:grid grid-cols-4 gap-1 hide_scroll auto-rows-min">
       {randomImages.map((image, index) => (
-        // <img key={index} src={image.webp} alt={image.title} 
-        //   loading="lazy"
-        //    className="w-full h-120 object-cover" />
-           <ImageWithSkeleton 
+        <ImageWithSkeleton 
         src={image.webp}
         alt={image.title}
         loading="lazy"
         className="w-full h-full object-cover" />
+        // onClick={() => handleImageClick(image)}/> to control image grid in landing view
       ))}
     </motion.div>
     {/* Mobile view */}
     <div className="md:hidden flex flex-col space-y-2 pb-16">
       {randomImages.map((image, index) => (
-          <img key={index} src={image.mobile} alt={image.title}
-          loading="lazy"
-           className="w-full h-120 object-cover" />
+        <img key={index} src={image.mobile} alt={image.title}
+        loading="lazy"
+         className="w-full h-120 object-cover" />
       ))}
     </div>
-
-   
+    <ImageModal image={modalImage} onClose={() => setModalImage(null)} />
     </>
   );
 };
-
 const CollapsibleList = ({ items = [] }) => {
-
     const [expandedItems, setExpandedItems] = useState(new Set());
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -413,7 +388,7 @@ const CollapsibleList = ({ items = [] }) => {
                   <div key={`item-${field}-${index}`}>
                     <button 
                       onClick={() => toggleItem(index)}
-                      className="text-left w-full hover:text-white transition-colors"
+                      className="text-left w-full hover: text-white transition-colors"
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
@@ -450,7 +425,7 @@ const CollapsibleList = ({ items = [] }) => {
                     <motion.button
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className=" text-[#777777] pt-2 font-montreal text-base hover:text-white transition-colors"
+                    className=" text-[#777777] pt-2 font-montreal text-base hover: text-white transition-colors"
                     onClick={() => window.open('mailto:arvindksushil@gmail.com?subject=Inquiry about GLO project', '_blank')}>
                       Contact for more info
                     </motion.button>
@@ -510,7 +485,7 @@ const CollapsibleList = ({ items = [] }) => {
                       toggleItem(index);
                       setShowAlternateText(false);
                     }}
-                    className="text-left hover:text-white transition-colors mr-2">
+                    className="text-left hover: text-white transition-colors mr-2">
                       <motion.span
                       animate={{
                         color: expandedItems.has(index) ? '#ffffff' : '#777777'
@@ -547,7 +522,7 @@ const CollapsibleList = ({ items = [] }) => {
             <div className="flex flex-row space-x-2 mb-4 w-full">
               <div>
                 <button onClick={() => toggleItem('all')}
-                className="text-left w-full hover:text-white transition-colors mr-2">
+                className="text-left w-full hover: text-white transition-colors mr-2">
                   <motion.span
                   animate={{
                     color: showAllImages ? '#ffffff' :
@@ -562,7 +537,7 @@ const CollapsibleList = ({ items = [] }) => {
                     toggleItem(index);
                     setShowAlternateText(prev => !prev);
                   }}
-                  className="text-left w-full hover:text-white transition-colors mr-2">
+                  className="text-left w-full hover: text-white transition-colors mr-2">
                     <motion.span
                     animate={{
                       color: showAllImages ? '#777777' :
@@ -642,15 +617,10 @@ const Home = () => {
     return (
             <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
             initial="hidden" animate="visible">
-                {/* <motion.div variants={loadAnimation}> */}
                 <Header />
-                {/* </motion.div> */}
-                {/* <motion.div className="md:mt-12 flex-1" variants={loadAnimation}> */}
                 <div className="md:mt-12 flex-1">
                   <CollapsibleList items={projectData} />
-                </div>
-                {/* </motion.div> */}
-                    
+                </div>                 
             </motion.div>
     )
 };
