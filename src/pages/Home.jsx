@@ -80,6 +80,16 @@ const projectData = [
       imageUrl: "/assets/04-01.jpg",
       imageUrlWeb: "/assets/04-01.webp",
       imageUrlmb: "/assets/04-01-mb.jpg",
+      imageUrl2: "/assets/04-02.jpg",
+      imageUrl2Web: "/assets/04-02.webp",
+      imageUrl2mb: "/assets/04-02-mb.jpg",
+      imageUrl3: "/assets/04-03.jpg",
+      imageUrl3Web: "/assets/04-03.webp",
+      imageUrl3mb: "/assets/04-03-mb.jpg",
+      imageUrl4: "/assets/04-04.jpg",
+      imageUrl4Web: "/assets/04-04.webp",
+      imageUrl4mb: "/assets/04-04-mb.jpg",
+   
   },
 ];
 
