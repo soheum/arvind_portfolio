@@ -8,71 +8,48 @@ import { cv } from '../data/cv';
 
 const projectData = [
     {
-      title: "GLO",
+      title: "Hyper",
       category: "Product",
       type: "Commercial",
       year: "2025",
-      description: "Developing new category of reduced risk products for GLO at British American Tobacco.",
-      // Words in the description that become links, each with its own hover colour
-      descriptionLinks: [
-        // Pantone Orange Tiger (16-1358 TCX)
-        { text: "GLO", url: "https://www.myglo.com/en-gr/collections/glo-heated-tobacco-devices", hoverColor: "#F96714" },
-        // BAT light blue (dark navy #0E2B63 is hard to see on black)
-        { text: "British American Tobacco", url: "https://www.bat.com/", hoverColor: "#00B1EB" },
-      ],
-      // Sub-tabs shown under GLO. Add a description and images (same keys as
-      // a project: imageUrl, imageUrlWeb, imageUrlmb, imageUrl2, ...) to each.
-      // A sub-tab without images shows the GLO images instead.
-      subProjects: [
-        {
-          title: "Hyper",
-          description: "Hyper Pro is a heated tobacco device. The central dial makes opening the device and switching modes intuitive, and it is the first in its class to introduce a display, making the user journey effortless and considered. It is crafted from aluminium with premium finishes.",
-          imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
-          imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
-          imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
-          imageUrl4: "/assets/04-01.webp", imageUrl4Web: "/assets/04-01.webp", imageUrl4mb: "/assets/04-01-mb.jpg",
-          imageUrl5: "/assets/hyper-blue-pink.jpg", imageUrl5Web: "/assets/hyper-blue-pink.jpg", imageUrl5mb: "/assets/hyper-blue-pink-mb.jpg",
-          imageUrl6: "/assets/hyper-ring.jpg", imageUrl6Web: "/assets/hyper-ring.jpg", imageUrl6mb: "/assets/hyper-ring-mb.jpg",
-          imageUrl7: "/assets/hyper-dials.jpg", imageUrl7Web: "/assets/hyper-dials.jpg", imageUrl7mb: "/assets/hyper-dials-mb.jpg",
-        },
-        {
-          title: "Hilo",
-          description: "Hilo is the flagship heated tobacco device in the range, offered in two formats: a compact one-piece (Hilo) and a two-piece pen with charging case (Hilo Plus). Its innovative heating technology delivers a first-in-class five-second ramp-up, and an AMOLED display makes the product experience effortless.",
-          imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
-          imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
-          imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
-          imageUrl4: "/assets/hilo-04.jpg", imageUrl4Web: "/assets/hilo-04.jpg", imageUrl4mb: "/assets/hilo-04-mb.jpg",
-          imageUrl5: "/assets/hilo-05.jpg", imageUrl5Web: "/assets/hilo-05.jpg", imageUrl5mb: "/assets/hilo-05-mb.jpg",
-          imageUrl6: "/assets/hilo-colours.jpg", imageUrl6Web: "/assets/hilo-colours.jpg", imageUrl6mb: "/assets/hilo-colours-mb.jpg", imageUrl6NoCrop: true,
-          imageUrl7: "/assets/hilo-blue-pens.jpg", imageUrl7Web: "/assets/hilo-blue-pens.jpg", imageUrl7mb: "/assets/hilo-blue-pens-mb.jpg", imageUrl7NoCrop: true,
-        },
-        {
-          title: "Infuse",
-          description: "Infuse opens a new category in heated tobacco, pairing tobacco extract with an infusion system that replaces combustion. Its pen-like format, soft mouthpiece and session control system reimagine the ritual.",
-          imageUrl: "/assets/infuse-front.jpg", imageUrlWeb: "/assets/infuse-front.jpg", imageUrlmb: "/assets/infuse-front-mb.jpg",
-          imageUrl2: "/assets/infuse-closeup.jpg", imageUrl2Web: "/assets/infuse-closeup.jpg", imageUrl2mb: "/assets/infuse-closeup-mb.jpg",
-        },
-      ],
-      imageUrl: "/assets/04-02.webp",
-      imageUrlWeb: "/assets/04-02.webp",
-      imageUrlmb: "/assets/04-02-mb.jpg",
-      imageUrl2: "/assets/04-03.webp",
-      imageUrl2Web: "/assets/04-03.webp",
-      imageUrl2mb: "/assets/04-03-mb.jpg",
-      imageUrl3: "/assets/04-04.webp",
-      imageUrl3Web: "/assets/04-04.webp",
-      imageUrl3mb: "/assets/04-04-mb.jpg",
-      imageUrl4: "/assets/04-01.webp",
-      imageUrl4Web: "/assets/04-01.webp",
-      imageUrl4mb: "/assets/04-01-mb.jpg",
-   
-  },
+      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. It was the first in its class to introduce a display: EasyView shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.",
+      imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
+      imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
+      imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
+      imageUrl4: "/assets/04-01.webp", imageUrl4Web: "/assets/04-01.webp", imageUrl4mb: "/assets/04-01-mb.jpg",
+      imageUrl5: "/assets/hyper-blue-pink.jpg", imageUrl5Web: "/assets/hyper-blue-pink.jpg", imageUrl5mb: "/assets/hyper-blue-pink-mb.jpg",
+      imageUrl6: "/assets/hyper-ring.jpg", imageUrl6Web: "/assets/hyper-ring.jpg", imageUrl6mb: "/assets/hyper-ring-mb.jpg",
+      imageUrl7: "/assets/hyper-dials.jpg", imageUrl7Web: "/assets/hyper-dials.jpg", imageUrl7mb: "/assets/hyper-dials-mb.jpg",
+    },
+    {
+      title: "Hilo",
+      category: "Product",
+      type: "Commercial",
+      year: "2025",
+      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.",
+      imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
+      imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
+      imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
+      imageUrl4: "/assets/hilo-04.jpg", imageUrl4Web: "/assets/hilo-04.jpg", imageUrl4mb: "/assets/hilo-04-mb.jpg",
+      imageUrl5: "/assets/hilo-05.jpg", imageUrl5Web: "/assets/hilo-05.jpg", imageUrl5mb: "/assets/hilo-05-mb.jpg",
+      imageUrl6: "/assets/hilo-colours.jpg", imageUrl6Web: "/assets/hilo-colours.jpg", imageUrl6mb: "/assets/hilo-colours-mb.jpg", imageUrl6NoCrop: true,
+      imageUrl7: "/assets/hilo-blue-pens.jpg", imageUrl7Web: "/assets/hilo-blue-pens.jpg", imageUrl7mb: "/assets/hilo-blue-pens-mb.jpg", imageUrl7NoCrop: true,
+    },
+    {
+      title: "Infuse",
+      category: "Product",
+      type: "Commercial",
+      year: "2025",
+      description: "Infuse opens a new category in heated tobacco, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.",
+      imageUrl: "/assets/infuse-front.jpg", imageUrlWeb: "/assets/infuse-front.jpg", imageUrlmb: "/assets/infuse-front-mb.jpg",
+      imageUrl2: "/assets/infuse-closeup.jpg", imageUrl2Web: "/assets/infuse-closeup.jpg", imageUrl2mb: "/assets/infuse-closeup-mb.jpg",
+    },
     {
         title: "Collier",
         category: "Accessories",
         type: "Personal",
         year: "2025",
-        description: "Personalized leather dog collar. The titanium buckle, cushioning suede patch and steel hook are subtle nods that capture the essence of our four legged friend.",
+        description: "A personalised leather dog collar. Its titanium buckle, cushioning suede patch and steel hook are subtle details that capture the character of our four-legged friends.",
         imageUrl: "/assets/01-01.jpg",
         imageUrlWeb: "/assets/01-01.webp",
         imageUrlmb: "/assets/01-01-mb.jpg",
@@ -99,7 +76,7 @@ const projectData = [
       category: "Accessories",
       type: "Personal",
       year: "2024",
-      description: "Gold dipped-Sterling silver bracelet.The design embodies harmony of contrasts, symbolizing unity and balance through its fluid and gentle shapes.",
+      description: "A gold-dipped sterling silver bracelet. Its fluid, gentle forms express a harmony of contrasts, symbolising unity and balance.",
       imageUrl: "/assets/03-01.jpg",
       imageUrlWeb: "/assets/03-01.webp",
       imageUrlmb: "/assets/03-01-mb.jpg",
@@ -118,7 +95,7 @@ const projectData = [
       category: "Accessories",
       type: "Personal",
       year: "2024",
-      description: "A sterling silver badge capturing the tension between two volumes as they unite or separate, with a fastening D-pin at the back . Hallmarked with traditional symbols denoting the maker's mark, precious metal, place of origin, and year",
+      description: "A sterling silver badge capturing the tension between two volumes as they come together or pull apart, with a D-pin fastening at the back. It is hallmarked with traditional symbols for the maker, precious metal, place of origin and year.",
       imageUrl: "/assets/02-01.jpg",
       imageUrlWeb: "/assets/02-01.webp",
       imageUrlmb: "/assets/02-01-mb.jpg",
@@ -171,9 +148,17 @@ const DescriptionLink = ({ link }) => {
   );
 };
 
-const renderDescription = (item) => {
-  let parts = [item.description];
-  (item.descriptionLinks || []).forEach(link => {
+// Glo brand intro: shown before the description of whichever BAT project
+// (Hyper, Hilo or Infuse) the visitor opens first, and not on the others after that
+const BAT_PROJECTS = ['Hyper', 'Hilo', 'Infuse'];
+const GLO_INTRO = 'Glo is BAT’s brand of tobacco heating products, designed to help adult smokers switch completely from cigarettes to a potentially reduced-risk alternative.';
+const GLO_LINK = { text: 'Glo', url: 'https://www.myglo.com/en-gr/collections/glo-heated-tobacco-devices', hoverColor: '#F96714' }; // Pantone Orange Tiger
+
+// Blank lines ("\n\n") in a description start a new paragraph
+const renderDescription = (item, withGloIntro = false) => (withGloIntro ? GLO_INTRO + '\n\n' : '')
+  .concat(item.description).split('\n\n').map((para, i) => {
+  let parts = [para];
+  [...(item.descriptionLinks || []), ...(withGloIntro ? [GLO_LINK] : [])].forEach(link => {
     parts = parts.flatMap(part => {
       if (typeof part !== 'string') return [part];
       const at = part.indexOf(link.text);
@@ -181,8 +166,8 @@ const renderDescription = (item) => {
       return [part.slice(0, at), <DescriptionLink key={link.text} link={link} />, part.slice(at + link.text.length)];
     });
   });
-  return parts;
-};
+  return <span key={i} className={`block ${i > 0 ? 'mt-2' : ''}`}>{parts}</span>;
+});
 
 const headerAnimation = {
   hidden: { opacity: 0 },
@@ -445,8 +430,9 @@ const getTiles = (source) => source.video
   ? [...getImages(source), { src: source.video, webp: source.video, video: true }]
   : getImages(source);
 
-// How many grey GLO renders appear in the landing page grid
+// How many grey GLO renders (from Hyper, Hilo, Infuse) appear in the landing page grid
 const GLO_LANDING_COUNT = 3;
+const GREY_RENDER_PROJECTS = ['Hyper', 'Hilo', 'Infuse'];
 
 // Most images a project may show in the landing page grid (others: no limit)
 const LANDING_LIMITS = { 'Orbit-Axiom': 1 };
@@ -472,23 +458,21 @@ const ImageGrid= ({ items, selectedIndex, selectedSub = null, showAllImages, onO
 
   const randomImages = useMemo(() => {
     const images = [...items]
-    .filter(item => item.title !== "GLO")
+    .filter(item => !GREY_RENDER_PROJECTS.includes(item.title))
     // Projects listed in LANDING_LIMITS show at most that many (random) images
     .flatMap(item => shuffle(getImages(item)
         .filter(img => !LANDING_ONLY[item.title] || LANDING_ONLY[item.title].some(name => img.webp.includes(name))))
       .slice(0, LANDING_LIMITS[item.title] ?? Infinity)
       .map(img => ({ ...img, title: item.title })));
 
-    // Mix in a few of GLO's grey studio renders: GLO's own images plus the
-    // Hilo/Infuse renders (Hyper's colour shots and uncropped photos are left out)
-    const glo = items.find(item => item.title === "GLO");
-    const greyRenders = glo ? [
-      ...getImages(glo).map(img => ({ ...img, title: "GLO" })),
-      ...(glo.subProjects || [])
-        .filter(sub => sub.title !== "Hyper")
-        .flatMap(sub => getImages(sub).map(img => ({ ...img, title: "GLO", sub: sub.title })))
-        .filter(img => !img.noCrop),
-    ] : [];
+    // Mix in a few grey studio renders from Hyper, Hilo and Infuse (Hyper's silver
+    // renders only; its colour shots and Hilo's uncropped photos are left out)
+    const greyRenders = items
+      .filter(item => GREY_RENDER_PROJECTS.includes(item.title))
+      .flatMap(item => getImages(item)
+        .filter(img => !img.noCrop && (item.title !== 'Hyper' || img.webp.includes('/04-')))
+        .map(img => ({ ...img, title: item.title })));
+
     // No repeats: each image appears at most once. If there aren't enough other
     // project images to fill 16 tiles, more GLO renders fill the gap.
     const unique = (list) => list.filter((img, i) => list.findIndex(o => o.webp === img.webp) === i);
@@ -710,8 +694,9 @@ const CVModal = ({ onClose }) => {
   );
 };
 
-// Intro shown above the project list when the name is clicked. It opens inside the
-// list column, so only the text below it moves down; the image grid stays put.
+// Intro shown above the project list: open on first load, collapses up when a
+// project opens, and clicking the name drops it down again. It opens inside the
+// list column, so only the text below it moves; the image grid stays put.
 const Intro = ({ open }) => (
   <AnimatePresence initial={false}>
     {open && (
@@ -738,18 +723,22 @@ const Intro = ({ open }) => (
           },
         }}
       >
-        <div className="pb-8 space-y-3 font-geist font-extralight text-base leading-relaxed text-[#8A8A8A]">
+        <div className="pb-8 space-y-1.5 font-geist font-extralight text-base leading-snug text-[#8A8A8A]">
           <p>I shape product portfolios and bring category-defining products to market. I challenge convention to create products that give brands a clear identity and connect with people.</p>
           <p>My personal work explores beauty and craftsmanship of the objects we live with.</p>
           <p>Specialties: Industrial Design, CMF, Physical UX, Platform Strategy, Design Roadmapping.</p>
-          <p>Current role: Senior Design Lead, British American Tobacco, London</p>
+          <p>
+            Current role: Senior Design Lead, Developing a new category of reduced-risk products for{' '}
+            {/* BAT light blue on hover */}
+            <DescriptionLink link={{ text: 'British American Tobacco', url: 'https://www.bat.com/', hoverColor: '#00B1EB' }} />, London
+          </p>
         </div>
       </motion.div>
     )}
   </AnimatePresence>
 );
 
-const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => {} }) => {
+const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => {}, onProjectClose = () => {} }) => {
     const [expandedItems, setExpandedItems] = useState(new Set());
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -758,6 +747,11 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
     const [selectedSub, setSelectedSub] = useState(null);
     // True until a sub-tab is picked: the tabs flash white one by one as a hint to click them
     const [subIntro, setSubIntro] = useState(true);
+    // The first BAT project the visitor opens; it alone shows the Glo intro
+    const [gloIntroFor, setGloIntroFor] = useState(null);
+    const claimGloIntro = (title) => {
+      if (BAT_PROJECTS.includes(title)) setGloIntroFor(prev => prev ?? title);
+    };
     // CV pop-up (opened from the CV link next to E-mail)
     const [showCV, setShowCV] = useState(false);
 
@@ -803,6 +797,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
       const index = items.findIndex(item => item.title === title);
       if (index === -1) return;
       onProjectOpen(); // collapse the intro
+      claimGloIntro(title);
       const subIndex = subTitle ? (items[index].subProjects || []).findIndex(sub => sub.title === subTitle) : -1;
       setShowAllImages(false);
       setExpandedItems(new Set([index]));
@@ -814,7 +809,9 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
 
     // Toggle item expansion
     const toggleItem = (index) => {
-      if (index !== 'all' && !expandedItems.has(index)) onProjectOpen(); // collapse the intro
+      // Opening a project collapses the intro; closing it brings the intro back
+      if (index !== 'all') expandedItems.has(index) ? onProjectClose() : onProjectOpen();
+      if (index !== 'all' && !expandedItems.has(index)) claimGloIntro(items[index].title);
       setSelectedSub(null);
       setSubIntro(true);
       if (index === 'all') {
@@ -906,7 +903,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                     {/* Hide the project description while a sub-tab (e.g. Hyper) shows its own */}
                     {!(item.subProjects && selectedSub !== null) && (
                     <span className="font-questrial font-light text-[#B3B3B3] text-base">
-                      {renderDescription(item)}
+                      {renderDescription(item, item.title === gloIntroFor)}
                     </span>
                     )}
                   {renderSubTabs(item)}
@@ -995,7 +992,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-2 font-questrial font-light text-[#B3B3B3] text-base">
-                      {renderDescription(item)}
+                      {renderDescription(item, item.title === gloIntroFor)}
                     </motion.div>
                   )}
                     {renderSubTabs(item)}
@@ -1043,7 +1040,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
       </div>
     </>
   );
-}, [items, selectedIndex, hoveredIndex, expandedItems, selectedSub, subIntro, showAllImages, showAlternateText, showIntro]);
+}, [items, selectedIndex, hoveredIndex, expandedItems, selectedSub, subIntro, showAllImages, showAlternateText, showIntro, gloIntroFor]);
   
     return (
       <div className="w-full h-full">
@@ -1109,14 +1106,14 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
 
 const Home = () => {
     // Intro above the project list: open on first load, collapses when a project is
-    // opened, and clicking the name toggles it
+    // opened, drops back down when it's closed, and clicking the name toggles it
     const [showIntro, setShowIntro] = useState(true);
     return (
             <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
             initial="hidden" animate="visible">
                 <Header onNameClick={() => setShowIntro(open => !open)} />
                 <div className="mt-6 md:mt-10 flex-1 min-h-0">
-                  <CollapsibleList items={projectData} showIntro={showIntro} onProjectOpen={() => setShowIntro(false)} />
+                  <CollapsibleList items={projectData} showIntro={showIntro} onProjectOpen={() => setShowIntro(false)} onProjectClose={() => setShowIntro(true)} />
                 </div>                 
             </motion.div>
     )
