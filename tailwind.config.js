@@ -17,7 +17,9 @@ export default {
     // },
     extend: {
       fontFamily: {
-        'montreal': ['Neue Montreal', 'sans-serif'],
+        'questrial': ['Questrial', 'sans-serif'],
+        'geist': ['Geist', 'sans-serif'],
+        'sans': ['Questrial', 'sans-serif'],
       },
       fontWeight: {
         light: '300',
