@@ -9,10 +9,11 @@ import { cv } from '../data/cv';
 const projectData = [
     {
       title: "Hyper",
+      headline: "Building a Challenger from the Ground Up",
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. It was the first in its class to introduce a display: EasyView shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.",
+      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the first product from BAT’s newly formed in-house design team, and the one that would define the Glo range. As the challenger in the category, there was a lot riding on it. We built our process, standards and design language as we went, and delivered a first-in-class display and a clearer, more intuitive experience.",
       imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
       imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
       imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
@@ -23,10 +24,11 @@ const projectData = [
     },
     {
       title: "Hilo",
+      headline: "Raising the Bar on Quality and Craft",
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.",
+      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.\n\nHilo was built around a new, smaller consumable. As the challenger brand, we wanted it to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression. Through several cost-down exercises, we refined the internal build to keep it premium while delivering better value for the business.",
       imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
       imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
       imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
@@ -37,10 +39,11 @@ const projectData = [
     },
     {
       title: "Infuse",
+      headline: "Making Something New Feel Instantly Familiar",
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Infuse opens a new category in heated tobacco, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.",
+      description: "Infuse opens a new category for Glo, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.\n\nInfuse was the hybrid of the range: technically a vapour product within a brand built on heated tobacco, with a consumable specially designed to recreate an authentic tobacco taste. It had to carry the qualities of the rest of the Glo range, while having a unique identity strong enough to stand on its own.",
       imageUrl: "/assets/infuse-front.jpg", imageUrlWeb: "/assets/infuse-front.jpg", imageUrlmb: "/assets/infuse-front-mb.jpg",
       imageUrl2: "/assets/infuse-closeup.jpg", imageUrl2Web: "/assets/infuse-closeup.jpg", imageUrl2mb: "/assets/infuse-closeup-mb.jpg",
     },
@@ -166,8 +169,26 @@ const renderDescription = (item, withGloIntro = false) => (withGloIntro ? GLO_IN
       return [part.slice(0, at), <DescriptionLink key={link.text} link={link} />, part.slice(at + link.text.length)];
     });
   });
-  return <span key={i} className={`block ${i > 0 ? 'mt-2' : ''}`}>{parts}</span>;
+  return <span key={i} className={`block ${i > 0 ? 'mt-3' : ''}`}>{parts}</span>;
 });
+
+// Open-project type hierarchy (project title itself sits in the list row above):
+//   1. Section label  "Overview"  11px caps, tracked, mid grey
+//   2. Headline       one-liner   20px white, tight leading
+//   3. Body           paragraphs  15px light grey, 1.6 leading (set on the wrapper)
+const renderDescriptionBlock = (item, withGloIntro = false) => (
+  <>
+    {item.description && (
+      <span className="block font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[#777777]">
+        {item.heading || 'Overview'}
+      </span>
+    )}
+    {item.headline && (
+      <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-white">{item.headline}</span>
+    )}
+    <span className={`block ${item.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription(item, withGloIntro)}</span>
+  </>
+);
 
 const headerAnimation = {
   hidden: { opacity: 0 },
@@ -856,7 +877,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             the footer below stays pinned at the bottom */}
         <div className="flex-1 min-h-0 overflow-y-auto hide_scroll">
         <Intro open={showIntro} />
-        <div className="space-y-0.5">
+        <div className="space-y-2">
           {items.map((item, index) => (
             <div key={`row-${index}`}>
               {/* Row container */}
@@ -876,13 +897,10 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                             : (hoveredIndex !== null ? (hoveredIndex === index ? "#ffffff" : "#777777")
                               : "#ffffff"),
                         }}
-                        // Year: smaller, in Questrial
-                        className={field === 'year'
-                          ? "font-questrial ease-in text-[13px] tracking-wide"
-                          // Project names and categories may wrap (e.g. "Orbit-Axiom", "Heated Product") when space is tight
-                          : field === 'title' || field === 'category'
-                            ? "font-questrial ease-in text-base lg:whitespace-normal"
-                            : "font-questrial ease-in text-base"}
+                        // Year, project name and category: same size, bold; name and category may wrap when space is tight
+                        className={field === 'title' || field === 'category'
+                          ? "font-questrial ease-in text-lg font-bold lg:whitespace-normal"
+                          : "font-questrial ease-in text-lg font-bold"}
                       >
                         {item[field]}
                       </motion.span>
@@ -899,11 +917,11 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   exit={{ opacity: 0, height: 0 }}
                   className="col-span-4 overflow-hidden"
                 >
-                  <div className="pt-1 pb-0.5">
+                  <div className="pt-4 pb-6">
                     {/* Hide the project description while a sub-tab (e.g. Hyper) shows its own */}
                     {!(item.subProjects && selectedSub !== null) && (
-                    <span className="font-questrial font-light text-[#B3B3B3] text-base">
-                      {renderDescription(item, item.title === gloIntroFor)}
+                    <span className="font-questrial font-light text-[#B3B3B3] text-[15px] leading-[1.6]">
+                      {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </span>
                     )}
                   {renderSubTabs(item)}
@@ -978,12 +996,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                       animate={{
                         color: expandedItems.has(index) ? '#ffffff' : '#777777'
                       }}
-                      className="font-questrial ease-in text-base"> {item.title} </motion.span>
+                      className="font-questrial ease-in text-lg font-bold"> {item.title} </motion.span>
                     </button>
                     <motion.div 
                     initial={{ oapcity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="font-questrial text-[#777777] ml-2 text-base">
+                    className="font-questrial font-bold text-[#777777] ml-2 text-lg">
                       {item.category}  ·  {item.year}
                     </motion.div>
                   </div>
@@ -991,8 +1009,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="mt-2 font-questrial font-light text-[#B3B3B3] text-base">
-                      {renderDescription(item, item.title === gloIntroFor)}
+                    className="mt-2 font-questrial font-light text-[#B3B3B3] text-[15px] leading-[1.6]">
+                      {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </motion.div>
                   )}
                     {renderSubTabs(item)}
