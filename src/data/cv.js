@@ -3,7 +3,7 @@
 export const cv = {
   name: 'Arvind Sushil',
   summary: [
-    'Senior Designer at British American Tobacco, developing the next category of reduced-risk products.',
+    'Senior Design Lead at British American Tobacco, developing the next category of reduced-risk products.',
     'Senior industrial and experience designer with 10 years of experience designing consumer products.',
     'I shape product portfolios and bring category-defining ideas to market, challenging convention to give brands a clear identity that connects with people.',
     'My work is considerate and delightful to use, showcases build quality and craftsmanship, and above all has a timeless character.',

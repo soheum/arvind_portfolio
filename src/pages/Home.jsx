@@ -725,7 +725,7 @@ const Intro = ({ open }) => (
       >
         <div className="pb-8 space-y-1.5 font-geist font-extralight text-base leading-snug text-[#8A8A8A]">
           <p>
-            Senior Designer at{' '}
+            Senior Design Lead at{' '}
             {/* BAT light blue on hover */}
             <DescriptionLink link={{ text: 'British American Tobacco', url: 'https://www.bat.com/', hoverColor: '#00B1EB' }} />, developing the next category of reduced-risk products.
           </p>
