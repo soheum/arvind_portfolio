@@ -9,7 +9,7 @@ import { cv } from '../data/cv';
 const projectData = [
     {
       title: "Hyper",
-      category: "Product",
+      category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
       description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. It was the first in its class to introduce a display: EasyView shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.",
@@ -23,7 +23,7 @@ const projectData = [
     },
     {
       title: "Hilo",
-      category: "Product",
+      category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
       description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.",
@@ -37,7 +37,7 @@ const projectData = [
     },
     {
       title: "Infuse",
-      category: "Product",
+      category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
       description: "Infuse opens a new category in heated tobacco, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.",
@@ -724,14 +724,14 @@ const Intro = ({ open }) => (
         }}
       >
         <div className="pb-8 space-y-1.5 font-geist font-extralight text-base leading-snug text-[#8A8A8A]">
-          <p>I shape product portfolios and bring category-defining products to market. I challenge convention to create products that give brands a clear identity and connect with people.</p>
-          <p>My personal work explores beauty and craftsmanship of the objects we live with.</p>
-          <p>Specialties: Industrial Design, CMF, Physical UX, Platform Strategy, Design Roadmapping.</p>
           <p>
-            Current role: Senior Design Lead, Developing a new category of reduced-risk products for{' '}
+            Senior Designer at{' '}
             {/* BAT light blue on hover */}
-            <DescriptionLink link={{ text: 'British American Tobacco', url: 'https://www.bat.com/', hoverColor: '#00B1EB' }} />, London
+            <DescriptionLink link={{ text: 'British American Tobacco', url: 'https://www.bat.com/', hoverColor: '#00B1EB' }} />, developing the next category of reduced-risk products.
           </p>
+          <p>I shape product portfolios and bring category-defining ideas to market, challenging convention to give brands a clear identity that connects with people.</p>
+          <p>My work is considerate and delightful to use, showcases build quality and craftsmanship, and above all has a timeless character.</p>
+          <p>Specialties: Industrial Design, CMF, Physical UX, Platform Strategy, Design Roadmapping.</p>
         </div>
       </motion.div>
     )}
@@ -844,9 +844,9 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
 
     const listItems = useMemo(() => {
 
-      const headers = ['Year', 'Project', 'Category', 'Type'];
+      const headers = ['Year', 'Project', 'Category'];
       // Year first (left), then project, category, type
-      const fields = ['year', 'title', 'category', 'type'];
+      const fields = ['year', 'title', 'category'];
 
       return (
         <>
@@ -860,7 +860,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           {items.map((item, index) => (
             <div key={`row-${index}`}>
               {/* Row container */}
-              <div className="grid grid-cols-4 gap-2 items-baseline hyphens-auto [overflow-wrap:anywhere] lg:hyphens-none lg:[overflow-wrap:normal] lg:grid-cols-[minmax(2.5rem,0.6fr)_minmax(3.75rem,1fr)_minmax(5.5rem,1fr)_minmax(5.5rem,1fr)] lg:whitespace-nowrap">
+              <div className="grid grid-cols-3 gap-2 items-baseline hyphens-auto [overflow-wrap:anywhere] lg:hyphens-none lg:[overflow-wrap:normal] lg:grid-cols-[minmax(2.5rem,0.6fr)_minmax(3.75rem,1fr)_minmax(5.5rem,1fr)] lg:whitespace-nowrap">
                 {fields.map((field) => (
                   <div key={`item-${field}-${index}`}>
                     <button 
@@ -879,8 +879,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                         // Year: smaller, in Questrial
                         className={field === 'year'
                           ? "font-questrial ease-in text-[13px] tracking-wide"
-                          // Project names may wrap (e.g. at the hyphen in "Orbit-Axiom") when space is tight
-                          : field === 'title'
+                          // Project names and categories may wrap (e.g. "Orbit-Axiom", "Heated Product") when space is tight
+                          : field === 'title' || field === 'category'
                             ? "font-questrial ease-in text-base lg:whitespace-normal"
                             : "font-questrial ease-in text-base"}
                       >
@@ -984,7 +984,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                     initial={{ oapcity: 0 }}
                     animate={{ opacity: 1 }}
                     className="font-questrial text-[#777777] ml-2 text-base">
-                      {item.category}  ·  {item.type}  ·  {item.year}
+                      {item.category}  ·  {item.year}
                     </motion.div>
                   </div>
                   {!(item.subProjects && selectedSub !== null) && (
