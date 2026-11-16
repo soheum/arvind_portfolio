@@ -10,10 +10,17 @@ const projectData = [
     {
       title: "Hyper",
       headline: "Building a Challenger from the Ground Up",
+      // Extra sections after the overview, each with the same label / headline / body hierarchy
+      sections: [
+        {
+          label: "Results & Learnings",
+          body: "Hyper was the first product designed truly in-house. As a small team, we owned everything from ID and CMF to much of the UX, and built our process, standards and design language as we went. It also meant forging strong relationships and establishing new ways of working with our cross-functional partners in marketing, product engineering and research.",
+        },
+      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the first product from BAT’s newly formed in-house design team, and the one that would define the Glo range. As the challenger in the category, there was a lot riding on it. We built our process, standards and design language as we went, and delivered a first-in-class display and a clearer, more intuitive experience.",
+      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the product that would define the Glo range. As the challenger in the category, there was a lot riding on it, and it delivered a first-in-class display and a clearer, more intuitive experience.",
       imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
       imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
       imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
@@ -25,10 +32,16 @@ const projectData = [
     {
       title: "Hilo",
       headline: "Raising the Bar on Quality and Craft",
+      sections: [
+        {
+          label: "Results & Learnings",
+          body: "Technically, Hilo was one of the most rewarding projects. We pushed the engineering teams to fit a new heating system, a display and a battery to power it all into a compact form factor. That meant getting deep into the hardware, both challenging and supporting engineering to make it work. Through several cost-down exercises, we also refined the internal build to keep it premium while delivering better value for the business.",
+        },
+      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.\n\nHilo was built around a new, smaller consumable. As the challenger brand, we wanted it to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression. Through several cost-down exercises, we refined the internal build to keep it premium while delivering better value for the business.",
+      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.\n\nHilo was built around a new, smaller consumable. As the challenger brand, we wanted it to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression.",
       imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
       imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
       imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
@@ -40,6 +53,12 @@ const projectData = [
     {
       title: "Infuse",
       headline: "Making Something New Feel Instantly Familiar",
+      sections: [
+        {
+          label: "Results & Learnings",
+          body: "Infuse was the first time we developed the device and consumable pod together. That meant defining the platform architecture and creating a roadmap for future generations, with room for the brand to evolve.\n\nFrom an experience perspective, we had to deliver the same session control as the premium range, within the constraints of the Infuse platform.",
+        },
+      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
@@ -187,6 +206,15 @@ const renderDescriptionBlock = (item, withGloIntro = false) => (
       <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-white">{item.headline}</span>
     )}
     <span className={`block ${item.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription(item, withGloIntro)}</span>
+    {(item.sections || []).map(sec => (
+      <React.Fragment key={sec.label}>
+        <span className="block mt-8 font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[#777777]">{sec.label}</span>
+        {sec.headline && (
+          <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-white">{sec.headline}</span>
+        )}
+        <span className={`block ${sec.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription({ description: sec.body })}</span>
+      </React.Fragment>
+    ))}
   </>
 );
 
