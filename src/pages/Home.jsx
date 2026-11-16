@@ -10,17 +10,10 @@ const projectData = [
     {
       title: "Hyper",
       headline: "Building a Challenger from the Ground Up",
-      // Extra sections after the overview, each with the same label / headline / body hierarchy
-      sections: [
-        {
-          label: "Results & Learnings",
-          body: "Hyper was the first product designed truly in-house. As a small team, we owned everything from ID and CMF to much of the UX, and built our process, standards and design language as we went. It also meant forging strong relationships and establishing new ways of working with our cross-functional partners in marketing, product engineering and research.",
-        },
-      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the product that would define the Glo range. As the challenger in the category, there was a lot riding on it, and it delivered a first-in-class display and a clearer, more intuitive experience.",
+      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the product that would define the Glo range, and the first designed truly in-house. As the challenger in the category, there was a lot riding on it.\n\nWith a small team, we owned everything from ID and CMF to much of the UX, building our process, standards and design language as we went, and forging new ways of working with marketing, product engineering and research. The result was a first-in-class display and a clearer, more intuitive experience.",
       imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
       imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
       imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
@@ -32,16 +25,10 @@ const projectData = [
     {
       title: "Hilo",
       headline: "Raising the Bar on Quality and Craft",
-      sections: [
-        {
-          label: "Results & Learnings",
-          body: "Technically, Hilo was one of the most rewarding projects. We pushed the engineering teams to fit a new heating system, a display and a battery to power it all into a compact form factor. That meant getting deep into the hardware, both challenging and supporting engineering to make it work. Through several cost-down exercises, we also refined the internal build to keep it premium while delivering better value for the business.",
-        },
-      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps the experience effortless.\n\nHilo was built around a new, smaller consumable. As the challenger brand, we wanted it to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression.",
+      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps it effortless to use.\n\nBuilt around a new, smaller consumable, Hilo was our chance as the challenger brand to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression.\n\nTechnically, it was one of the most rewarding projects. We pushed engineering to fit a new heating system, display and battery into a compact form factor, getting deep into the hardware to both challenge and support the team. Several cost-down exercises then refined the internal build, keeping it premium while delivering better value for the business.",
       imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
       imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
       imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
@@ -53,16 +40,10 @@ const projectData = [
     {
       title: "Infuse",
       headline: "Making Something New Feel Instantly Familiar",
-      sections: [
-        {
-          label: "Results & Learnings",
-          body: "Infuse was the first time we developed the device and consumable pod together. That meant defining the platform architecture and creating a roadmap for future generations, with room for the brand to evolve.\n\nFrom an experience perspective, we had to deliver the same session control as the premium range, within the constraints of the Infuse platform.",
-        },
-      ],
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Infuse opens a new category for Glo, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.\n\nInfuse was the hybrid of the range: technically a vapour product within a brand built on heated tobacco, with a consumable specially designed to recreate an authentic tobacco taste. It had to carry the qualities of the rest of the Glo range, while having a unique identity strong enough to stand on its own.",
+      description: "Infuse opens a new category for Glo, pairing tobacco extract with an infusion system in place of combustion. Its pen-like format, soft mouthpiece and session control reimagine the smoking ritual.\n\nInfuse was the hybrid of the range: technically a vapour product within a brand built on heated tobacco, with a consumable specially designed to recreate an authentic tobacco taste. It had to carry the qualities of its Glo siblings, while having an identity strong enough to stand on its own.\n\nIt was also the first time we developed the device and consumable pod together, which meant defining the platform architecture and a roadmap for future generations, with room for the brand to evolve. On the experience side, we brought the premium range’s session control to Infuse, within the constraints of its platform.",
       imageUrl: "/assets/infuse-front.jpg", imageUrlWeb: "/assets/infuse-front.jpg", imageUrlmb: "/assets/infuse-front-mb.jpg",
       imageUrl2: "/assets/infuse-closeup.jpg", imageUrl2Web: "/assets/infuse-closeup.jpg", imageUrl2mb: "/assets/infuse-closeup-mb.jpg",
     },
