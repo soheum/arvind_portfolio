@@ -450,7 +450,7 @@ const getImages = (source) => Array.from({ length: 16 }, (_, i) => {
   return {
     src: source[`imageUrl${n}`],
     webp: source[`imageUrl${n}Web`],
-    mobile: source[`imageUrl${n}mb`],
+    mobile: source[`imageUrl${n}mb`] || source[`imageUrl${n}Web`] || source[`imageUrl${n}`], // phone-size file, else the lighter web one
     noCrop: source[`imageUrl${n}NoCrop`],
   };
 }).filter(img => img.webp);
@@ -528,7 +528,7 @@ const ImageGrid= ({ items, selectedIndex, selectedSub = null, showAllImages, onO
         {randomImages.map((image, index) => (
           <ImageWithSkeleton
             key={image.webp}
-            src={image.src}
+            src={image.mobile || image.src}
             alt={image.title}
             width={1}
             height={1}
@@ -589,7 +589,7 @@ const ImageGrid= ({ items, selectedIndex, selectedSub = null, showAllImages, onO
       {selectedImages.map((image, index) => (
         <ImageWithSkeleton
           key={`${selectedSub ?? 'all'}-${image.webp}`}
-          src={image.src}
+          src={image.video ? image.src : (image.mobile || image.src)}
           alt={items[selectedIndex].title}
           loading="lazy"
           imageBg={image.noCrop ? '#E2E2DC' : undefined}
@@ -1020,8 +1020,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
         </div>
       </motion.div>
 
-      <div className="sm:hidden"><Intro open={showIntro} /></div>
-      <div className="flex justify-between sm:hidden">
+      <div className="md:hidden"><Intro open={showIntro} /></div>
+      <div className="flex justify-between md:hidden min-w-0">
         {/* Container for all content */}
         <div className="w-full">
           {showAlternateText ? (
@@ -1063,7 +1063,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
               ))}
             </div>
           ) : (
-            <div className="flex flex-row space-x-2 mb-4 w-full">
+            <div className="flex flex-row space-x-2 mb-4 w-full overflow-x-auto hide_scroll whitespace-nowrap [&>*]:shrink-0">
               <div>
                 <button onClick={() => toggleItem('all')}
                 className="text-left w-full hover: text-[var(--fg)] transition-colors mr-2">
@@ -1107,7 +1107,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
     return (
       <div className="w-full h-full">
         {/* Mobile footer (shows on mobile, hides on md screens and up) */}
-        <div className="sm:hidden mb-8">
+        <div className="md:hidden mb-8">
           <motion.a 
             href="https://www.linkedin.com/in/arvind-sushil-01/"
             target="_blank"
@@ -1150,10 +1150,10 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
         <AnimatePresence>
           {showCV && <CVModal key="cv" onClose={() => setShowCV(false)} />}
         </AnimatePresence>
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-[minmax(0,1fr)] md:gap-6 h-full">
+        <div className="grid grid-cols-[minmax(0,1fr)] md:grid-cols-3 md:grid-rows-[minmax(0,1fr)] md:gap-6 h-full">
             {listItems}
-          <div className="sm:hidden col-span-2 h-full hide_scroll overflow-y-auto pt-1 pb-16">
-            <div className="sticky top-4 overflow-y-auto ">
+          <div className="md:hidden pt-1 pb-16">
+            <div>
               <ImageGrid items={items} selectedIndex={selectedIndex} selectedSub={selectedSub} showAllImages={showAllImages} onOpenProject={openProject} onSelectSub={(i) => { setSubIntro(false); setSelectedSub(i); }} />
             </div>
           </div>
@@ -1172,7 +1172,7 @@ const Home = () => {
     // opened, drops back down when it's closed, and clicking the name toggles it
     const [showIntro, setShowIntro] = useState(true);
     return (
-            <motion.div className="container mx-auto flex flex-col px-4 md:px-6 h-screen overflow-hidden"
+            <motion.div className="container mx-auto flex flex-col px-4 md:px-6 min-h-screen md:h-screen md:overflow-hidden"
             initial="hidden" animate="visible">
                 <Header onNameClick={() => setShowIntro(open => !open)} />
                 <div className="mt-6 md:mt-10 flex-1 min-h-0">
