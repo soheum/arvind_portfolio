@@ -70,6 +70,7 @@ const projectData = [
         imageUrl5mb: "/assets/01-05-mb.jpg",
         imageUrl6: "/assets/01-06.jpg",
         imageUrl6Web: "/assets/01-06.webp",
+        imageUrl6mb: "/assets/01-06-mb.jpg",
         imageUrl7: "/assets/01-07.jpg",
         imageUrl7Web: "/assets/01-07.webp",
         imageUrl7mb: "/assets/01-07-mb.jpg",
