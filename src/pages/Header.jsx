@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 const Header = ({ onNameClick = () => {} }) => {
     return (
         <header className="container mx-auto w-full pt-8">
-            <h1 onClick={onNameClick} className="cursor-pointer text-white text-2xl font-regular font-medium font-questrial">ARVIND SUSHIL</h1>
+            <h1 onClick={onNameClick} className="cursor-pointer text-[var(--fg)] text-2xl font-regular font-medium font-questrial">Arvind Sushil</h1>
             <div className="md:hidden mb-8">
             </div>
         </header>

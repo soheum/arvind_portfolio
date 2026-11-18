@@ -179,19 +179,19 @@ const renderDescription = (item, withGloIntro = false) => (withGloIntro ? GLO_IN
 const renderDescriptionBlock = (item, withGloIntro = false) => (
   <>
     {item.description && (
-      <span className="block font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[#777777]">
+      <span className="block font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[var(--fg-muted)]">
         {item.heading || 'Overview'}
       </span>
     )}
     {item.headline && (
-      <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-white">{item.headline}</span>
+      <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-[var(--fg)]">{item.headline}</span>
     )}
     <span className={`block ${item.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription(item, withGloIntro)}</span>
     {(item.sections || []).map(sec => (
       <React.Fragment key={sec.label}>
-        <span className="block mt-8 font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[#777777]">{sec.label}</span>
+        <span className="block mt-8 font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[var(--fg-muted)]">{sec.label}</span>
         {sec.headline && (
-          <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-white">{sec.headline}</span>
+          <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-[var(--fg)]">{sec.headline}</span>
         )}
         <span className={`block ${sec.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription({ description: sec.body })}</span>
       </React.Fragment>
@@ -637,6 +637,40 @@ const ImageGrid= ({ items, selectedIndex, selectedSub = null, showAllImages, onO
     </>
   );
 };
+// Theme switch: a word next to CV naming the background it switches to
+// ("Light" on the dark site, "Dark" on the white site).
+const currentTheme = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+
+const toggleTheme = () => {
+  const root = document.documentElement;
+  const next = currentTheme() === 'light' ? 'dark' : 'light';
+  if (next === 'light') root.dataset.theme = 'light';
+  else delete root.dataset.theme;
+  try { localStorage.setItem('theme', next); } catch (e) { /* storage unavailable */ }
+  window.dispatchEvent(new Event('themechange'));
+};
+
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(currentTheme);
+  useEffect(() => {
+    const sync = () => setTheme(currentTheme());
+    window.addEventListener('themechange', sync);
+    return () => window.removeEventListener('themechange', sync);
+  }, []);
+  return (
+    <motion.button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} background`}
+      className="font-questrial text-base cursor-pointer"
+      initial={{ color: "var(--fg-link)" }}
+      whileHover={{ color: "var(--fg)" }}
+    >
+      {theme === 'light' ? 'Dark' : 'Light'}
+    </motion.button>
+  );
+};
+
 // CV pop-up: the CV as real text on the page (content in src/data/cv.js), with a
 // button to download the PDF. Esc, the X or clicking outside closes it.
 const CV_URL = '/assets/Arvind-Sushil-CV.pdf';
@@ -649,7 +683,7 @@ const CVModal = ({ onClose }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-10"
+      className="fixed inset-0 z-50 bg-[var(--overlay)] flex items-center justify-center p-4 md:p-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -657,7 +691,7 @@ const CVModal = ({ onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full max-w-4xl h-full max-h-[90vh] flex flex-col bg-black border border-[#222]"
+        className="w-full max-w-4xl h-full max-h-[90vh] flex flex-col bg-[var(--bg)] border border-[var(--border)]"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 10, opacity: 0 }}
@@ -665,10 +699,10 @@ const CVModal = ({ onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 md:px-10 pt-5 pb-3 font-questrial text-base">
-          <a href={CV_URL} download="Arvind-Sushil-CV.pdf" className="text-[#B3B3B3] hover:text-white transition-colors">
+          <a href={CV_URL} download="Arvind-Sushil-CV.pdf" className="text-[var(--fg-body)] hover:text-[var(--fg)] transition-colors">
             Download PDF
           </a>
-          <button onClick={onClose} className="text-white hover:text-gray-300 transition-colors" aria-label="Close CV">
+          <button onClick={onClose} className="text-[var(--fg)] hover:text-[var(--fg-muted)] transition-colors" aria-label="Close CV">
             <X size={24} />
           </button>
         </div>
@@ -677,14 +711,14 @@ const CVModal = ({ onClose }) => {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.75fr] gap-10 md:gap-14 pt-4">
             {/* Left: name, summary, links */}
             <div>
-              <h2 className="font-questrial text-white text-2xl">{cv.name}</h2>
-              <div className="mt-6 space-y-3 font-geist font-light text-sm leading-relaxed text-[#9A9A9A]">
+              <h2 className="font-questrial text-[var(--fg)] text-2xl">{cv.name}</h2>
+              <div className="mt-6 space-y-3 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-body)]">
                 {cv.summary.map((line) => <p key={line}>{line}</p>)}
               </div>
               <div className="mt-6 space-y-1 font-geist font-light text-sm">
                 {cv.links.map((link) => (
                   <a key={link.href} href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer" className="block text-white hover:text-[#B3B3B3] transition-colors">
+                    rel="noopener noreferrer" className="block text-[var(--fg)] hover:text-[var(--fg-body)] transition-colors">
                     {link.label}
                   </a>
                 ))}
@@ -693,26 +727,26 @@ const CVModal = ({ onClose }) => {
 
             {/* Right: experience and education */}
             <div>
-              <h3 className="font-questrial text-white text-2xl">Experience</h3>
+              <h3 className="font-questrial text-[var(--fg)] text-2xl">Experience</h3>
               <div className="mt-6 space-y-8">
                 {cv.experience.map((job) => (
                   <div key={job.role + job.meta}>
-                    <h4 className="font-questrial text-white text-lg">{job.role}</h4>
-                    <p className="mt-1 font-geist text-sm text-white">{job.meta}</p>
-                    <p className="mt-1 font-geist font-light text-sm leading-relaxed text-[#D0D0D0]">{job.summary}</p>
-                    <ul className="mt-3 space-y-1 font-geist font-light text-sm leading-relaxed text-[#9A9A9A] list-disc pl-4 marker:text-[#555]">
+                    <h4 className="font-questrial text-[var(--fg)] text-lg">{job.role}</h4>
+                    <p className="mt-1 font-geist text-sm text-[var(--fg)]">{job.meta}</p>
+                    <p className="mt-1 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-sub)]">{job.summary}</p>
+                    <ul className="mt-3 space-y-1 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-body)] list-disc pl-4 marker:text-[var(--marker)]">
                       {job.points.map((point) => <li key={point}>{point}</li>)}
                     </ul>
                   </div>
                 ))}
               </div>
 
-              <h3 className="mt-12 font-questrial text-white text-2xl">Education</h3>
+              <h3 className="mt-12 font-questrial text-[var(--fg)] text-2xl">Education</h3>
               <div className="mt-6 space-y-5">
                 {cv.education.map((ed) => (
                   <div key={ed.school}>
-                    <h4 className="font-questrial text-white text-lg">{ed.school}</h4>
-                    <p className="mt-1 font-geist font-light text-sm text-[#D0D0D0]">{ed.detail}</p>
+                    <h4 className="font-questrial text-[var(--fg)] text-lg">{ed.school}</h4>
+                    <p className="mt-1 font-geist font-light text-sm text-[var(--fg-cv-sub)]">{ed.detail}</p>
                   </div>
                 ))}
               </div>
@@ -753,7 +787,7 @@ const Intro = ({ open }) => (
           },
         }}
       >
-        <div className="pb-8 space-y-1.5 font-geist font-extralight text-base leading-snug text-[#8A8A8A]">
+        <div className="pb-8 space-y-1.5 font-geist font-extralight text-base leading-snug text-[var(--fg-intro)]">
           <p>
             Senior Design Lead at{' '}
             {/* BAT light blue on hover */}
@@ -797,8 +831,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   setSubIntro(false);
                   setSelectedSub(prev => (prev === subIndex ? null : subIndex));
                 }}
-                animate={{ color: selectedSub === subIndex ? "#ffffff" : "#777777" }}
-                whileHover={{ color: "#ffffff" }}
+                animate={{ color: selectedSub === subIndex ? "var(--fg)" : "var(--fg-muted)" }}
+                whileHover={{ color: "var(--fg)" }}
                 // On open, each tab flashes white once, one after another (CSS animation in
                 // index.css, so hovering or re-rendering never replays it)
                 className={`font-questrial text-base ${selectedSub === null && subIntro ? 'subtab-flash' : ''}`}
@@ -811,7 +845,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="pb-2 font-questrial font-light text-[#B3B3B3] text-base"
+                  className="pb-2 font-questrial font-light text-[var(--fg-body)] text-base"
                 >
                   {sub.description}
                 </motion.div>
@@ -895,16 +929,16 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   <div key={`item-${field}-${index}`}>
                     <button 
                       onClick={() => toggleItem(index)}
-                      className="text-left w-full hover: text-white transition-colors"
+                      className="text-left w-full hover: text-[var(--fg)] transition-colors"
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
                       <motion.span
                         animate={{
                           color: expandedItems.size > 0
-                            ? (expandedItems.has(index) || hoveredIndex === index ? "#ffffff" : "#777777")
-                            : (hoveredIndex !== null ? (hoveredIndex === index ? "#ffffff" : "#777777")
-                              : "#ffffff"),
+                            ? (expandedItems.has(index) || hoveredIndex === index ? "var(--fg)" : "var(--fg-muted)")
+                            : (hoveredIndex !== null ? (hoveredIndex === index ? "var(--fg)" : "var(--fg-muted)")
+                              : "var(--fg)"),
                         }}
                         // Year, project name and category: same size, bold; name and category may wrap when space is tight
                         className={field === 'title' || field === 'category'
@@ -929,7 +963,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   <div className="pt-4 pb-6">
                     {/* Hide the project description while a sub-tab (e.g. Hyper) shows its own */}
                     {!(item.subProjects && selectedSub !== null) && (
-                    <span className="font-questrial font-light text-[#B3B3B3] text-[15px] leading-[1.6]">
+                    <span className="font-questrial font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
                       {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </span>
                     )}
@@ -950,8 +984,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           target="_blank"
           rel="noopener noreferrer"
           className="font-questrial text-base mr-2 cursor-pointer"
-          initial={{ color: "#606060" }}
-          whileHover={{ color: "#ffffff" }}
+          initial={{ color: "var(--fg-link)" }}
+          whileHover={{ color: "var(--fg)" }}
           >
           LinkedIn
           </motion.a>
@@ -960,16 +994,16 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           target="_blank"
           rel="noopener noreferrer"
           className="font-questrial text-base mr-2 cursor-pointer"
-          initial={{ color: "#606060" }}
-          whileHover={{ color: "#ffffff" }}
+          initial={{ color: "var(--fg-link)" }}
+          whileHover={{ color: "var(--fg)" }}
           >
           Instagram
           </motion.a>
           <motion.a 
           href="mailto:arvindksushil@gmail.com?subject=Hello, should we have a coffee chat?"
           className="font-questrial text-base mr-2 cursor-pointer"
-          initial={{ color: "#606060" }}
-          whileHover={{ color: "#ffffff" }}
+          initial={{ color: "var(--fg-link)" }}
+          whileHover={{ color: "var(--fg)" }}
           >
           E-mail
           </motion.a>
@@ -977,11 +1011,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           type="button"
           onClick={() => setShowCV(true)}
           className="font-questrial text-base mr-2 cursor-pointer"
-          initial={{ color: "#606060" }}
-          whileHover={{ color: "#ffffff" }}
+          initial={{ color: "var(--fg-link)" }}
+          whileHover={{ color: "var(--fg)" }}
           >
           CV
           </motion.button>
+          <ThemeToggle />
         </div>
       </motion.div>
 
@@ -1000,17 +1035,17 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                       toggleItem(index);
                       setShowAlternateText(false);
                     }}
-                    className="text-left hover: text-white transition-colors mr-2">
+                    className="text-left hover: text-[var(--fg)] transition-colors mr-2">
                       <motion.span
                       animate={{
-                        color: expandedItems.has(index) ? '#ffffff' : '#777777'
+                        color: expandedItems.has(index) ? 'var(--fg)' : 'var(--fg-muted)'
                       }}
                       className="font-questrial ease-in text-lg font-bold"> {item.title} </motion.span>
                     </button>
                     <motion.div 
                     initial={{ oapcity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="font-questrial font-bold text-[#777777] ml-2 text-lg">
+                    className="font-questrial font-bold text-[var(--fg-muted)] ml-2 text-lg">
                       {item.category}  ·  {item.year}
                     </motion.div>
                   </div>
@@ -1018,7 +1053,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="mt-2 font-questrial font-light text-[#B3B3B3] text-[15px] leading-[1.6]">
+                    className="mt-2 font-questrial font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
                       {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </motion.div>
                   )}
@@ -1031,11 +1066,11 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             <div className="flex flex-row space-x-2 mb-4 w-full">
               <div>
                 <button onClick={() => toggleItem('all')}
-                className="text-left w-full hover: text-white transition-colors mr-2">
+                className="text-left w-full hover: text-[var(--fg)] transition-colors mr-2">
                   <motion.span
                   animate={{
-                    color: showAllImages ? '#ffffff' :
-                    (expandedItems.size > 0 ? '#777777' : '#ffffff')
+                    color: showAllImages ? 'var(--fg)' :
+                    (expandedItems.size > 0 ? 'var(--fg-muted)' : 'var(--fg)')
                   }} 
                   className="font-questrial ease-in text-base">All</motion.span>
                 </button>
@@ -1046,13 +1081,13 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                     toggleItem(index);
                     setShowAlternateText(prev => !prev);
                   }}
-                  className="text-left w-full hover: text-white transition-colors mr-2">
+                  className="text-left w-full hover: text-[var(--fg)] transition-colors mr-2">
                     <motion.span
                     animate={{
-                      color: showAllImages ? '#777777' :
+                      color: showAllImages ? 'var(--fg-muted)' :
                       (expandedItems.size >0 
-                      ? (expandedItems.has(index) ? "#ffffff" : "#777777")
-                    : "#ffffff"),
+                      ? (expandedItems.has(index) ? "var(--fg)" : "var(--fg-muted)")
+                    : "var(--fg)"),
                     }}
                     className="font-questrial ease-in text-base">
                       {item.title}
@@ -1078,8 +1113,8 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             target="_blank"
             rel="noopener noreferrer"
             className="font-questrial text-base mr-2 cursor-pointer"
-            initial={{ color: "#606060" }}
-            whileHover={{ color: "#ffffff" }}
+            initial={{ color: "var(--fg-link)" }}
+            whileHover={{ color: "var(--fg)" }}
           >
             LinkedIn
           </motion.a>
@@ -1088,16 +1123,16 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             target="_blank"
             rel="noopener noreferrer"
             className="font-questrial text-base mr-2 cursor-pointer"
-            initial={{ color: "#606060" }}
-            whileHover={{ color: "#ffffff" }}
+            initial={{ color: "var(--fg-link)" }}
+            whileHover={{ color: "var(--fg)" }}
           >
             Instagram
           </motion.a>
           <motion.a 
             href="mailto:arvindksushil@gmail.com?subject=Hello, should we have a coffee chat?"
             className="font-questrial text-base mr-2 cursor-pointer"
-            initial={{ color: "#606060" }}
-            whileHover={{ color: "#ffffff" }}
+            initial={{ color: "var(--fg-link)" }}
+            whileHover={{ color: "var(--fg)" }}
           >
             E-mail
           </motion.a>
@@ -1105,11 +1140,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             type="button"
             onClick={() => setShowCV(true)}
             className="font-questrial text-base mr-2 cursor-pointer"
-            initial={{ color: "#606060" }}
-            whileHover={{ color: "#ffffff" }}
+            initial={{ color: "var(--fg-link)" }}
+            whileHover={{ color: "var(--fg)" }}
           >
             CV
           </motion.button>
+          <ThemeToggle />
         </div>
         <AnimatePresence>
           {showCV && <CVModal key="cv" onClose={() => setShowCV(false)} />}

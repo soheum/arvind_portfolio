@@ -19,8 +19,37 @@
   font-display: swap;
 }
 
+/* Theme colours. Dark is the default; add ?theme=light to the URL for the white version. */
+:root {
+  --bg: #000000;
+  --overlay: rgba(0, 0, 0, 0.9);
+  --fg: #ffffff;          /* titles, headlines, active list rows */
+  --fg-muted: #777777;    /* inactive list rows, section labels */
+  --fg-body: #B3B3B3;     /* project descriptions */
+  --fg-intro: #8A8A8A;    /* intro paragraphs */
+  --fg-link: #606060;     /* footer links */
+  --fg-cv-body: #9A9A9A;
+  --fg-cv-sub: #D0D0D0;
+  --border: #222222;
+  --marker: #555555;
+}
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --overlay: rgba(255, 255, 255, 0.92);
+  --fg: #111111;
+  --fg-muted: #9A9A9A;
+  --fg-body: #555555;
+  --fg-intro: #6B6B6B;
+  --fg-link: #8F8F8F;
+  --fg-cv-body: #666666;
+  --fg-cv-sub: #333333;
+  --border: #E6E6E6;
+  --marker: #BBBBBB;
+}
+
 body {
   font-family: 'Questrial', sans-serif;
+  background-color: var(--bg);
 }
 
 /* GLO sub-tabs (Hyper / Hilo / Infuse) flash white once when they appear */
