@@ -17,9 +17,8 @@ export default {
     // },
     extend: {
       fontFamily: {
-        'questrial': ['Questrial', 'sans-serif'],
         'geist': ['Geist', 'sans-serif'],
-        'sans': ['Questrial', 'sans-serif'],
+        'sans': ['Geist', 'sans-serif'],
       },
       fontWeight: {
         light: '300',

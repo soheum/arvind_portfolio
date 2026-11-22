@@ -7,13 +7,7 @@ import { motion } from 'framer-motion';
 // import './App.css'
 import './index.css'
 
-// Background theme: dark by default. The circle next to CV switches it and the
-// choice is remembered on this browser; ?theme=light / ?theme=dark in the URL overrides it.
-{
-  let theme = new URLSearchParams(window.location.search).get('theme');
-  if (!theme) { try { theme = localStorage.getItem('theme'); } catch (e) { /* storage unavailable */ } }
-  if (theme === 'light') document.documentElement.dataset.theme = 'light';
-}
+// Background theme is set in index.html before the page paints (white by default).
 
 function App() {
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import '../index.css';
+import { createPortal } from 'react-dom';
 import Header from './Header';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft, ArrowRight, Play } from 'lucide-react';
@@ -13,7 +14,10 @@ const projectData = [
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the product that would define the Glo range, and the first designed truly in-house. As the challenger in the category, there was a lot riding on it.\n\nWith a small team, we owned everything from ID and CMF to much of the UX, building our process, standards and design language as we went, and forging new ways of working with marketing, product engineering and research. The result was a first-in-class display and a clearer, more intuitive experience.",
+      description: "Hyper Pro is a compact heated tobacco device crafted from lightweight aluminium. Its TasteSelect dial makes it easy to customise flavour, with Boost Mode for extra intensity. The EasyView display shows battery life, pre-heating status and session progress at a glance, and a quick press reveals the remaining charge.\n\nHyper was the product that would define the Glo range, and the first designed truly in-house. As the challenger in the category, there was a lot riding on it.\n\nWith a small team, we owned everything from ID and CMF to much of the UX, building our process, standards and design language as we went, and forging new ways of working with marketing, product engineering and research. The result was a first-in-class display and a clearer, more intuitive experience.\n\nLearn more about Hyper.",
+      descriptionLinks: [
+        { text: 'Hyper', url: 'https://www.myglo.com/en-gr/products/heated-tobacco-device-glo-hyper-pro', hoverColor: '#F96714', paragraph: 'last', underline: true }, // Pantone Orange Tiger
+      ],
       imageUrl: "/assets/04-02.webp", imageUrlWeb: "/assets/04-02.webp", imageUrlmb: "/assets/04-02-mb.jpg",
       imageUrl2: "/assets/04-03.webp", imageUrl2Web: "/assets/04-03.webp", imageUrl2mb: "/assets/04-03-mb.jpg",
       imageUrl3: "/assets/04-04.webp", imageUrl3Web: "/assets/04-04.webp", imageUrl3mb: "/assets/04-04-mb.jpg",
@@ -28,7 +32,10 @@ const projectData = [
       category: "Inhalation Product",
       type: "Commercial",
       year: "2025",
-      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps it effortless to use.\n\nBuilt around a new, smaller consumable, Hilo was our chance as the challenger brand to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression.\n\nTechnically, it was one of the most rewarding projects. We pushed engineering to fit a new heating system, display and battery into a compact form factor, getting deep into the hardware to both challenge and support the team. Several cost-down exercises then refined the internal build, keeping it premium while delivering better value for the business.",
+      description: "Hilo is the flagship of the Glo range, offered in two formats: a compact one-piece device (Hilo) and a two-piece pen with charging case (Hilo Plus). Its heating technology delivers a first-in-class five-second ramp-up, while an AMOLED display keeps it effortless to use.\n\nBuilt around a new, smaller consumable, Hilo was our chance as the challenger brand to showcase quality and craftsmanship. Its UI matured into a richer digital experience, and the range became a vehicle for premium colour and material expression.\n\nTechnically, it was one of the most rewarding projects. We pushed engineering to fit a new heating system, display and battery into a compact form factor, getting deep into the hardware to both challenge and support the team. Several cost-down exercises then refined the internal build, keeping it premium while delivering better value for the business.\n\nLearn more about Hilo.",
+      descriptionLinks: [
+        { text: 'Hilo', url: 'https://www.myglo.com/en-gr/products/glo-hilo-plus', hoverColor: '#F96714', paragraph: 'last', underline: true }, // Pantone Orange Tiger
+      ],
       imageUrl: "/assets/hilo-01.jpg", imageUrlWeb: "/assets/hilo-01.jpg", imageUrlmb: "/assets/hilo-01-mb.jpg",
       imageUrl2: "/assets/hilo-02.jpg", imageUrl2Web: "/assets/hilo-02.jpg", imageUrl2mb: "/assets/hilo-02-mb.jpg",
       imageUrl3: "/assets/hilo-03.jpg", imageUrl3Web: "/assets/hilo-03.jpg", imageUrl3mb: "/assets/hilo-03-mb.jpg",
@@ -144,7 +151,7 @@ const DescriptionLink = ({ link }) => {
       onClick={(e) => e.stopPropagation()}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="cursor-pointer transition-colors duration-200"
+      className={`cursor-pointer transition-colors duration-200 ${link.underline ? 'underline underline-offset-[3px] decoration-1' : ''}`}
       style={{ color: hover ? link.hoverColor : undefined }}
     >
       {link.text}
@@ -156,13 +163,18 @@ const DescriptionLink = ({ link }) => {
 // (Hyper, Hilo or Infuse) the visitor opens first, and not on the others after that
 const BAT_PROJECTS = ['Hyper', 'Hilo', 'Infuse'];
 const GLO_INTRO = 'Glo is BAT’s brand of tobacco heating products, designed to help adult smokers switch completely from cigarettes to a potentially reduced-risk alternative.';
-const GLO_LINK = { text: 'Glo', url: 'https://www.myglo.com/en-gr/collections/glo-heated-tobacco-devices', hoverColor: '#F96714' }; // Pantone Orange Tiger
+const GLO_LINK = { text: 'Glo', url: 'https://www.myglo.com/en-gr/collections/glo-heated-tobacco-devices', hoverColor: '#F96714', paragraph: 0 }; // Pantone Orange Tiger
 
 // Blank lines ("\n\n") in a description start a new paragraph
-const renderDescription = (item, withGloIntro = false) => (withGloIntro ? GLO_INTRO + '\n\n' : '')
-  .concat(item.description).split('\n\n').map((para, i) => {
+// A link can be limited to one paragraph with `paragraph` (an index, or 'last'),
+// so a word like "Hyper" or "Glo" is only linked where it's meant to be.
+const renderDescription = (item, withGloIntro = false) => {
+  const paras = (withGloIntro ? GLO_INTRO + '\n\n' : '').concat(item.description).split('\n\n');
+  return paras.map((para, i) => {
   let parts = [para];
-  [...(item.descriptionLinks || []), ...(withGloIntro ? [GLO_LINK] : [])].forEach(link => {
+  [...(item.descriptionLinks || []), ...(withGloIntro ? [GLO_LINK] : [])]
+    .filter(link => link.paragraph === undefined || link.paragraph === i || (link.paragraph === 'last' && i === paras.length - 1))
+    .forEach(link => {
     parts = parts.flatMap(part => {
       if (typeof part !== 'string') return [part];
       const at = part.indexOf(link.text);
@@ -171,28 +183,24 @@ const renderDescription = (item, withGloIntro = false) => (withGloIntro ? GLO_IN
     });
   });
   return <span key={i} className={`block ${i > 0 ? 'mt-3' : ''}`}>{parts}</span>;
-});
+  });
+};
 
 // Open-project type hierarchy (project title itself sits in the list row above):
-//   1. Section label  "Overview"  11px caps, tracked, mid grey
-//   2. Headline       one-liner   20px white, tight leading
-//   3. Body           paragraphs  15px light grey, 1.6 leading (set on the wrapper)
+//   1. Headline  one-liner   20px white, tight leading
+//   2. Body      paragraphs  15px light grey, 1.6 leading (set on the wrapper)
+// Optional extra sections (item.sections) repeat it with a small caps label.
 const renderDescriptionBlock = (item, withGloIntro = false) => (
   <>
-    {item.description && (
-      <span className="block font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[var(--fg-muted)]">
-        {item.heading || 'Overview'}
-      </span>
-    )}
     {item.headline && (
-      <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-[var(--fg)]">{item.headline}</span>
+      <span className="block font-geist text-[20px] leading-[1.25] text-[var(--fg)]">{item.headline}</span>
     )}
-    <span className={`block ${item.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription(item, withGloIntro)}</span>
+    <span className={`block ${item.headline ? 'mt-3' : ''}`}>{renderDescription(item, withGloIntro)}</span>
     {(item.sections || []).map(sec => (
       <React.Fragment key={sec.label}>
-        <span className="block mt-8 font-questrial text-[11px] leading-none uppercase tracking-[0.14em] text-[var(--fg-muted)]">{sec.label}</span>
+        <span className="block mt-8 font-geist text-[11px] leading-none uppercase tracking-[0.14em] text-[var(--fg-muted)]">{sec.label}</span>
         {sec.headline && (
-          <span className="block mt-2 font-questrial text-[20px] leading-[1.25] text-[var(--fg)]">{sec.headline}</span>
+          <span className="block mt-2 font-geist text-[20px] leading-[1.25] text-[var(--fg)]">{sec.headline}</span>
         )}
         <span className={`block ${sec.headline ? 'mt-3' : 'mt-2'}`}>{renderDescription({ description: sec.body })}</span>
       </React.Fragment>
@@ -236,10 +244,41 @@ const loadAnimation = {
 // Image tile that loads in two steps: first a solid block in the image's key
 // colour fades in, then the image itself fades in over it. Each tile gets a small
 // random delay so the grid fills in tile by tile rather than all at once.
+// Project-name bubble that follows the mouse over an image (mouse/trackpad only).
+// Frosted glass: translucent white with a background blur. Positioned with a
+// transform updated straight from mousemove, so following the cursor never re-renders.
+const CAN_HOVER = typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const BUBBLE_OFFSET = { x: 14, y: 18 };
+const placeBubble = (el, x, y) => {
+  if (!el) return;
+  // Flip to the left / above the cursor when it would run off the screen
+  const w = el.offsetWidth, h = el.offsetHeight;
+  const left = x + BUBBLE_OFFSET.x + w > window.innerWidth - 8 ? x - BUBBLE_OFFSET.x - w : x + BUBBLE_OFFSET.x;
+  const top = y + BUBBLE_OFFSET.y + h > window.innerHeight - 8 ? y - BUBBLE_OFFSET.y - h : y + BUBBLE_OFFSET.y;
+  el.style.transform = `translate(${left}px, ${top}px)`;
+};
+
+const HoverBubble = ({ label, bubbleRef, start }) => createPortal(
+  <div
+    ref={(el) => { bubbleRef.current = el; placeBubble(el, start.current.x, start.current.y); }}
+    className="pointer-events-none fixed left-0 top-0 z-[60]"
+  >
+    <motion.div
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.15, ease: 'easeOut' }}
+      className="origin-top-left whitespace-nowrap rounded-xl border border-white/40 bg-white/55 px-3 py-1.5 font-geist text-sm text-[#111] shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-md backdrop-saturate-150"
+    >
+      {label}
+    </motion.div>
+  </div>,
+  document.body
+);
+
 const ImageWithSkeleton  = ({ src, alt, width, height, onClick, className, wrapperClassName = '', imageBg, loading, playButton = false }) => {
   const [loaded, setLoaded] = useState(false);
   const [blockShown, setBlockShown] = useState(false);
-  // Hovering a tile fades the image out to its solid key-colour block
+  // Hover state drives the project-name bubble (the image itself no longer changes on hover)
   const [hovered, setHovered] = useState(false);
   // Random but fixed for this tile: when its colour block appears, and how long
   // the block holds before the image is revealed
@@ -250,15 +289,20 @@ const ImageWithSkeleton  = ({ src, alt, width, height, onClick, className, wrapp
   const color = colorFor(src);
   const ratio = width && height ? `${width}/${height}` : undefined;
   const revealed = loaded && blockShown;
-  const hasRevealed = useRef(false);
+  // Name bubble that follows the cursor
+  const bubbleRef = useRef(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const showBubble = hovered && CAN_HOVER && !!alt;
 
   return (
     <div
       className={`relative overflow-hidden ${wrapperClassName}`}
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={(e) => { mouse.current = { x: e.clientX, y: e.clientY }; setHovered(true); }}
+      onMouseMove={(e) => { mouse.current = { x: e.clientX, y: e.clientY }; placeBubble(bubbleRef.current, e.clientX, e.clientY); }}
       onMouseLeave={() => setHovered(false)}
     >
+      {showBubble && <HoverBubble label={alt} bubbleRef={bubbleRef} start={mouse} />}
       {/* Solid key-colour block */}
       <motion.div
         className="absolute inset-0"
@@ -275,12 +319,9 @@ const ImageWithSkeleton  = ({ src, alt, width, height, onClick, className, wrapp
         className="relative"
         style={{ backgroundColor: imageBg }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: revealed && !hovered ? 1 : 0 }}
-        // First reveal waits for the block to hold; hover in/out is immediate
-        transition={revealed && !hovered && !hasRevealed.current
-          ? { duration: 0.4, ease: 'easeOut', delay: timing.hold }
-          : { duration: 0.3, ease: 'easeOut' }}
-        onAnimationComplete={() => { if (revealed) hasRevealed.current = true; }}
+        animate={{ opacity: revealed ? 1 : 0 }}
+        // The reveal waits for the colour block to hold for a moment
+        transition={{ duration: 0.4, ease: 'easeOut', delay: timing.hold }}
       >
         {/\.(mp4|webm|mov)$/i.test(src) ? (
           // Video tile: plays silently on loop, like a moving image
@@ -638,40 +679,6 @@ const ImageGrid= ({ items, selectedIndex, selectedSub = null, showAllImages, onO
     </>
   );
 };
-// Theme switch: a word next to CV naming the background it switches to
-// ("Light" on the dark site, "Dark" on the white site).
-const currentTheme = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
-
-const toggleTheme = () => {
-  const root = document.documentElement;
-  const next = currentTheme() === 'light' ? 'dark' : 'light';
-  if (next === 'light') root.dataset.theme = 'light';
-  else delete root.dataset.theme;
-  try { localStorage.setItem('theme', next); } catch (e) { /* storage unavailable */ }
-  window.dispatchEvent(new Event('themechange'));
-};
-
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState(currentTheme);
-  useEffect(() => {
-    const sync = () => setTheme(currentTheme());
-    window.addEventListener('themechange', sync);
-    return () => window.removeEventListener('themechange', sync);
-  }, []);
-  return (
-    <motion.button
-      type="button"
-      onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} background`}
-      className="font-questrial text-base cursor-pointer"
-      initial={{ color: "var(--fg-link)" }}
-      whileHover={{ color: "var(--fg)" }}
-    >
-      {theme === 'light' ? 'Dark' : 'Light'}
-    </motion.button>
-  );
-};
-
 // CV pop-up: the CV as real text on the page (content in src/data/cv.js), with a
 // button to download the PDF. Esc, the X or clicking outside closes it.
 const CV_URL = '/assets/Arvind-Sushil-CV.pdf';
@@ -699,7 +706,7 @@ const CVModal = ({ onClose }) => {
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 md:px-10 pt-5 pb-3 font-questrial text-base">
+        <div className="flex items-center justify-between px-6 md:px-10 pt-5 pb-3 font-geist text-base">
           <a href={CV_URL} download="Arvind-Sushil-CV.pdf" className="text-[var(--fg-body)] hover:text-[var(--fg)] transition-colors">
             Download PDF
           </a>
@@ -712,7 +719,7 @@ const CVModal = ({ onClose }) => {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.75fr] gap-10 md:gap-14 pt-4">
             {/* Left: name, summary, links */}
             <div>
-              <h2 className="font-questrial text-[var(--fg)] text-2xl">{cv.name}</h2>
+              <h2 className="font-geist text-[var(--fg)] text-2xl">{cv.name}</h2>
               <div className="mt-6 space-y-3 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-body)]">
                 {cv.summary.map((line) => <p key={line}>{line}</p>)}
               </div>
@@ -728,11 +735,11 @@ const CVModal = ({ onClose }) => {
 
             {/* Right: experience and education */}
             <div>
-              <h3 className="font-questrial text-[var(--fg)] text-2xl">Experience</h3>
+              <h3 className="font-geist text-[var(--fg)] text-2xl">Experience</h3>
               <div className="mt-6 space-y-8">
                 {cv.experience.map((job) => (
                   <div key={job.role + job.meta}>
-                    <h4 className="font-questrial text-[var(--fg)] text-lg">{job.role}</h4>
+                    <h4 className="font-geist text-[var(--fg)] text-lg">{job.role}</h4>
                     <p className="mt-1 font-geist text-sm text-[var(--fg)]">{job.meta}</p>
                     <p className="mt-1 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-sub)]">{job.summary}</p>
                     <ul className="mt-3 space-y-1 font-geist font-light text-sm leading-relaxed text-[var(--fg-cv-body)] list-disc pl-4 marker:text-[var(--marker)]">
@@ -742,11 +749,11 @@ const CVModal = ({ onClose }) => {
                 ))}
               </div>
 
-              <h3 className="mt-12 font-questrial text-[var(--fg)] text-2xl">Education</h3>
+              <h3 className="mt-12 font-geist text-[var(--fg)] text-2xl">Education</h3>
               <div className="mt-6 space-y-5">
                 {cv.education.map((ed) => (
                   <div key={ed.school}>
-                    <h4 className="font-questrial text-[var(--fg)] text-lg">{ed.school}</h4>
+                    <h4 className="font-geist text-[var(--fg)] text-lg">{ed.school}</h4>
                     <p className="mt-1 font-geist font-light text-sm text-[var(--fg-cv-sub)]">{ed.detail}</p>
                   </div>
                 ))}
@@ -796,7 +803,6 @@ const Intro = ({ open }) => (
           </p>
           <p>I shape product portfolios and bring category-defining ideas to market, challenging convention to give brands a clear identity that connects with people.</p>
           <p>My work is considerate and delightful to use, showcases build quality and craftsmanship, and above all has a timeless character.</p>
-          <p>Specialties: Industrial Design, CMF, Physical UX, Platform Strategy, Design Roadmapping.</p>
         </div>
       </motion.div>
     )}
@@ -807,6 +813,10 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
     const [expandedItems, setExpandedItems] = useState(new Set());
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [hoveredIndex, setHoveredIndex] = useState(null);
+    // Small project thumbnail that follows the mouse over a list row (mouse/trackpad only)
+    const [thumbIndex, setThumbIndex] = useState(null);
+    const thumbRef = useRef(null);
+    const thumbMouse = useRef({ x: 0, y: 0 });
     const [showAllImages, setShowAllImages] = useState(false);
     const [showAlternateText, setShowAlternateText] = useState(false);
     const [selectedSub, setSelectedSub] = useState(null);
@@ -836,7 +846,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                 whileHover={{ color: "var(--fg)" }}
                 // On open, each tab flashes white once, one after another (CSS animation in
                 // index.css, so hovering or re-rendering never replays it)
-                className={`font-questrial text-base ${selectedSub === null && subIntro ? 'subtab-flash' : ''}`}
+                className={`font-geist text-base ${selectedSub === null && subIntro ? 'subtab-flash' : ''}`}
                 style={{ animationDelay: `${0.6 + subIndex * 0.3}s` }}
               >
                 {sub.title}
@@ -846,7 +856,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="pb-2 font-questrial font-light text-[var(--fg-body)] text-base"
+                  className="pb-2 font-geist font-light text-[var(--fg-body)] text-base"
                 >
                   {sub.description}
                 </motion.div>
@@ -909,12 +919,30 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
 
     const listItems = useMemo(() => {
 
-      const headers = ['Year', 'Project', 'Category'];
-      // Year first (left), then project, category, type
-      const fields = ['year', 'title', 'category'];
+      const headers = ['Year', 'Project'];
+      // Year on the left, then the project name (category is no longer shown)
+      const fields = ['year', 'title'];
 
       return (
         <>
+        {/* Thumbnail of the hovered project, following the cursor */}
+        {CAN_HOVER && thumbIndex !== null && items[thumbIndex]?.imageUrlWeb && createPortal(
+          <div
+            ref={(el) => { thumbRef.current = el; placeBubble(el, thumbMouse.current.x, thumbMouse.current.y); }}
+            className="pointer-events-none fixed left-0 top-0 z-[60]"
+          >
+            <motion.img
+              key={thumbIndex}
+              src={items[thumbIndex].imageUrlWeb}
+              alt=""
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+              className="block w-40 aspect-[4/5] object-cover origin-top-left rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
+            />
+          </div>,
+          document.body
+        )}
         {/* List and Footer in Desktop */}
       <motion.div className="flex flex-col justify-between hidden md:flex min-h-0" >
         {/* Intro + list scroll inside the column when they're taller than the screen;
@@ -925,7 +953,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           {items.map((item, index) => (
             <div key={`row-${index}`}>
               {/* Row container */}
-              <div className="grid grid-cols-3 gap-2 items-baseline hyphens-auto [overflow-wrap:anywhere] lg:hyphens-none lg:[overflow-wrap:normal] lg:grid-cols-[minmax(2.5rem,0.6fr)_minmax(3.75rem,1fr)_minmax(5.5rem,1fr)] lg:whitespace-nowrap">
+              <div
+                className="grid grid-cols-[2.75rem_minmax(0,1fr)] gap-2 items-baseline"
+                onMouseEnter={(e) => { thumbMouse.current = { x: e.clientX, y: e.clientY }; setThumbIndex(index); }}
+                onMouseMove={(e) => { thumbMouse.current = { x: e.clientX, y: e.clientY }; placeBubble(thumbRef.current, e.clientX, e.clientY); }}
+                onMouseLeave={() => setThumbIndex(null)}
+              >
                 {fields.map((field) => (
                   <div key={`item-${field}-${index}`}>
                     <button 
@@ -941,10 +974,11 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                             : (hoveredIndex !== null ? (hoveredIndex === index ? "var(--fg)" : "var(--fg-muted)")
                               : "var(--fg)"),
                         }}
-                        // Year, project name and category: same size, bold; name and category may wrap when space is tight
-                        className={field === 'title' || field === 'category'
-                          ? "font-questrial ease-in text-lg font-bold lg:whitespace-normal"
-                          : "font-questrial ease-in text-lg font-bold"}
+                        // Project name leads (Geist ExtraLight 18px); the year sits
+                        // back: smaller, light, even-width figures and dimmed, on the same baseline
+                        className={field === 'year'
+                          ? "font-geist font-light ease-in text-[13px] tabular-nums tracking-wide opacity-60"
+                          : "font-geist font-extralight ease-in text-lg"}
                       >
                         {item[field]}
                       </motion.span>
@@ -964,7 +998,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                   <div className="pt-4 pb-6">
                     {/* Hide the project description while a sub-tab (e.g. Hyper) shows its own */}
                     {!(item.subProjects && selectedSub !== null) && (
-                    <span className="font-questrial font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
+                    <span className="font-geist font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
                       {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </span>
                     )}
@@ -984,7 +1018,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           href="https://www.linkedin.com/in/arvind-sushil-01/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-questrial text-base mr-2 cursor-pointer"
+          className="font-geist font-extralight text-base mr-2 cursor-pointer"
           initial={{ color: "var(--fg-link)" }}
           whileHover={{ color: "var(--fg)" }}
           >
@@ -994,7 +1028,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           href="https://www.instagram.com/arvindsushil_/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-questrial text-base mr-2 cursor-pointer"
+          className="font-geist font-extralight text-base mr-2 cursor-pointer"
           initial={{ color: "var(--fg-link)" }}
           whileHover={{ color: "var(--fg)" }}
           >
@@ -1002,7 +1036,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           </motion.a>
           <motion.a 
           href="mailto:arvindksushil@gmail.com?subject=Hello, should we have a coffee chat?"
-          className="font-questrial text-base mr-2 cursor-pointer"
+          className="font-geist font-extralight text-base mr-2 cursor-pointer"
           initial={{ color: "var(--fg-link)" }}
           whileHover={{ color: "var(--fg)" }}
           >
@@ -1011,13 +1045,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           <motion.button
           type="button"
           onClick={() => setShowCV(true)}
-          className="font-questrial text-base mr-2 cursor-pointer"
+          className="font-geist font-extralight text-base mr-2 cursor-pointer"
           initial={{ color: "var(--fg-link)" }}
           whileHover={{ color: "var(--fg)" }}
           >
           CV
           </motion.button>
-          <ThemeToggle />
         </div>
       </motion.div>
 
@@ -1030,7 +1063,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
               {items.map((item, index) => (
                 expandedItems.has(index) && (
                 <div key={`row-${index}`}>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row items-baseline">
                     <button 
                     onClick={() => {
                       toggleItem(index);
@@ -1041,20 +1074,20 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                       animate={{
                         color: expandedItems.has(index) ? 'var(--fg)' : 'var(--fg-muted)'
                       }}
-                      className="font-questrial ease-in text-lg font-bold"> {item.title} </motion.span>
+                      className="font-geist font-extralight ease-in text-lg"> {item.title} </motion.span>
                     </button>
                     <motion.div 
                     initial={{ oapcity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="font-questrial font-bold text-[var(--fg-muted)] ml-2 text-lg">
-                      {item.category}  ·  {item.year}
+                    className="font-geist font-light tabular-nums tracking-wide text-[var(--fg-muted)] ml-2 text-[13px]">
+                      {item.year}
                     </motion.div>
                   </div>
                   {!(item.subProjects && selectedSub !== null) && (
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="mt-2 font-questrial font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
+                    className="mt-2 font-geist font-light text-[var(--fg-body)] text-[15px] leading-[1.6]">
                       {renderDescriptionBlock(item, item.title === gloIntroFor)}
                     </motion.div>
                   )}
@@ -1073,7 +1106,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                     color: showAllImages ? 'var(--fg)' :
                     (expandedItems.size > 0 ? 'var(--fg-muted)' : 'var(--fg)')
                   }} 
-                  className="font-questrial ease-in text-base">All</motion.span>
+                  className="font-geist font-extralight ease-in text-base">All</motion.span>
                 </button>
                 </div>
               {items.map((item, index) => (
@@ -1090,7 +1123,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
                       ? (expandedItems.has(index) ? "var(--fg)" : "var(--fg-muted)")
                     : "var(--fg)"),
                     }}
-                    className="font-questrial ease-in text-base">
+                    className="font-geist font-extralight ease-in text-base">
                       {item.title}
                     </motion.span>
                   </button>
@@ -1103,7 +1136,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
       </div>
     </>
   );
-}, [items, selectedIndex, hoveredIndex, expandedItems, selectedSub, subIntro, showAllImages, showAlternateText, showIntro, gloIntroFor]);
+}, [items, selectedIndex, hoveredIndex, thumbIndex, expandedItems, selectedSub, subIntro, showAllImages, showAlternateText, showIntro, gloIntroFor]);
   
     return (
       <div className="w-full h-full">
@@ -1113,7 +1146,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             href="https://www.linkedin.com/in/arvind-sushil-01/"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-questrial text-base mr-2 cursor-pointer"
+            className="font-geist font-extralight text-base mr-2 cursor-pointer"
             initial={{ color: "var(--fg-link)" }}
             whileHover={{ color: "var(--fg)" }}
           >
@@ -1123,7 +1156,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
             href="https://www.instagram.com/arvindsushil_/"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-questrial text-base mr-2 cursor-pointer"
+            className="font-geist font-extralight text-base mr-2 cursor-pointer"
             initial={{ color: "var(--fg-link)" }}
             whileHover={{ color: "var(--fg)" }}
           >
@@ -1131,7 +1164,7 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           </motion.a>
           <motion.a 
             href="mailto:arvindksushil@gmail.com?subject=Hello, should we have a coffee chat?"
-            className="font-questrial text-base mr-2 cursor-pointer"
+            className="font-geist font-extralight text-base mr-2 cursor-pointer"
             initial={{ color: "var(--fg-link)" }}
             whileHover={{ color: "var(--fg)" }}
           >
@@ -1140,13 +1173,12 @@ const CollapsibleList = ({ items = [], showIntro = false, onProjectOpen = () => 
           <motion.button
             type="button"
             onClick={() => setShowCV(true)}
-            className="font-questrial text-base mr-2 cursor-pointer"
+            className="font-geist font-extralight text-base mr-2 cursor-pointer"
             initial={{ color: "var(--fg-link)" }}
             whileHover={{ color: "var(--fg)" }}
           >
             CV
           </motion.button>
-          <ThemeToggle />
         </div>
         <AnimatePresence>
           {showCV && <CVModal key="cv" onClose={() => setShowCV(false)} />}

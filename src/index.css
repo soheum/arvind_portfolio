@@ -2,15 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Questrial';
-  src: url('./fonts/Questrial-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Geist (variable, 100-900) - used for the year column at weight 300 */
+/* Geist (variable, 100-900) - the site's only typeface */
 @font-face {
   font-family: 'Geist';
   src: url('./fonts/Geist-VariableFont_wght.ttf') format('truetype');
@@ -19,7 +11,7 @@
   font-display: swap;
 }
 
-/* Theme colours. Dark is the default; add ?theme=light to the URL for the white version. */
+/* Theme colours. :root holds the dark theme; data-theme="light" (the default, set in index.html) switches to white. */
 :root {
   --bg: #000000;
   --overlay: rgba(0, 0, 0, 0.9);
@@ -48,7 +40,7 @@
 }
 
 body {
-  font-family: 'Questrial', sans-serif;
+  font-family: 'Geist', sans-serif;
   background-color: var(--bg);
 }
 
